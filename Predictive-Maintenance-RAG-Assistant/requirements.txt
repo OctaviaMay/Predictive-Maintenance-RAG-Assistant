@@ -1,0 +1,17 @@
+pandas
+numpy
+matplotlib
+scikit-learn
+jupyter
+notebook
+python-frontmatter
+tqdm
+sentence-transformers
+torchvision
+minsearch
+psycopg[binary]
+python-dotenv
+openai
+markdown
+streamlit
+altair

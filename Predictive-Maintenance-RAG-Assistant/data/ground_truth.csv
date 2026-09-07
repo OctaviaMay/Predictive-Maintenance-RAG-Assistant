@@ -1,0 +1,356 @@
+question,query_section,document
+"How can I tell if a tool is approaching wear failure, especially if torque, temperature, and speed still look normal?",Tool Wear Failure,299b2d2994
+Is there a typical time window where tool wear failure becomes likely during continuous use?,Tool Wear Failure,299b2d2994
+Can tool wear failure happen without any obvious sensor warning beforehand?,Tool Wear Failure,299b2d2994
+What signs should I watch for when a tool has been running for around 200 to 240 minutes?,Tool Wear Failure,299b2d2994
+Does tool wear failure usually show up as a sudden event even when the machine data looks nominal?,Tool Wear Failure,299b2d2994
+What usually causes tool wear failure on a cutting tool?,Tool Wear Failure,7735d88102
+Is tool wear failure more about age and usage than overload?,Tool Wear Failure,7735d88102
+How does progressive edge wear end up causing tool fracture or process failure?,Tool Wear Failure,7735d88102
+What is the main root cause behind a TWF event in predictive maintenance?,Tool Wear Failure,7735d88102
+Why do cutting tools fail from wear out instead of sudden stress overload?,Tool Wear Failure,7735d88102
+"What reading range on tool wear usually points to a tool wear failure, and is it a hard cutoff?",Tool Wear Failure,e8a1fe10fc
+"If I see torque or spindle speed shifting, can I use that to spot tool wear failure early?",Tool Wear Failure,e8a1fe10fc
+Does tool wear failure normally show any weird air or process temperature behavior?,Tool Wear Failure,e8a1fe10fc
+Why would a machine still be okay even when the tool wear value is in the 200 to 240 range?,Tool Wear Failure,e8a1fe10fc
+What’s the main signal I should watch for tool wear failure instead of relying on torque or speed?,Tool Wear Failure,e8a1fe10fc
+What should I do with a unit once tool wear goes over 200 minutes?,Tool Wear Failure,157781c070
+"If a machine is due for a long production run, when should I replace the tool before it gets risky?",Tool Wear Failure,157781c070
+"Can I use torque spikes as an early sign of tool wear failure, or is that too late to trust?",Tool Wear Failure,157781c070
+"When tool wear is above 200 min, does it need priority inspection even if other readings look normal?",Tool Wear Failure,157781c070
+What is the best maintenance action to prevent tool wear failure from catching us by surprise?,Tool Wear Failure,157781c070
+"Is Tool Wear Failure usually a safety problem, or is it more of a quality and downtime issue?",Tool Wear Failure,70791c7ac7
+"When we see signs of TWF, should the machine be stopped right away or can it keep running?",Tool Wear Failure,70791c7ac7
+"Who should I report a Tool Wear Failure to on the line, and what’s the normal escalation path?",Tool Wear Failure,70791c7ac7
+"Do we only need to halt production if there’s actual risk of the tool breaking, or for any wear issue?",Tool Wear Failure,70791c7ac7
+What should the operator do after spotting tool wear so the right people can schedule the next step?,Tool Wear Failure,70791c7ac7
+What symptoms usually show up when heat dissipation failure happens during low-speed operation?,Heat Dissipation Failure,ae1dcf3957
+How can I tell if the process is in heat dissipation failure just from temperature and air temperature readings?,Heat Dissipation Failure,ae1dcf3957
+"Does low rotational speed by itself mean HDF is happening, or do I need the temperature gap too?",Heat Dissipation Failure,ae1dcf3957
+What exact temperature difference and rpm limits define heat dissipation failure in this process?,Heat Dissipation Failure,ae1dcf3957
+When should I suspect HDF instead of just a normal cooling issue on the machine?,Heat Dissipation Failure,ae1dcf3957
+What usually causes Heat Dissipation Failure when the spindle is running slowly?,Heat Dissipation Failure,b2a1fbed0a
+Why does cooling get worse if the process and ambient temperatures are already very close?,Heat Dissipation Failure,b2a1fbed0a
+How do low rotational speed and weak airflow lead to heat building up around the tool and workpiece?,Heat Dissipation Failure,b2a1fbed0a
+What makes convective heat transfer too weak to remove process heat in a small thermal gradient situation?,Heat Dissipation Failure,b2a1fbed0a
+"In a heat dissipation failure, why can local heat keep accumulating instead of being carried away?",Heat Dissipation Failure,b2a1fbed0a
+How do I spot the sensor pattern for heat dissipation failure in this machine?,Heat Dissipation Failure,a4415efbd0
+What should I calculate from process temperature and air temperature to detect HDF early?,Heat Dissipation Failure,a4415efbd0
+"Is low rotational speed alone enough to call a heat dissipation failure, or do I need another condition too?",Heat Dissipation Failure,a4415efbd0
+Which values or combination of readings usually point to heat dissipation failure risk?,Heat Dissipation Failure,a4415efbd0
+Why can the temperatures look normal even when the machine is heading toward heat dissipation failure?,Heat Dissipation Failure,a4415efbd0
+What should I do when a unit is showing heat dissipation failure and the temperature keeps trending up?,Heat Dissipation Failure,c98d530bd3
+Should I monitor a derived temperature difference feature instead of only looking at raw temperature readings for HDF?,Heat Dissipation Failure,c98d530bd3
+"If a machine stays below 1380 rpm for a long time, do I need to check the temperature gradient more closely?",Heat Dissipation Failure,c98d530bd3
+"Is low rotational speed always safe in heat dissipation failure cases, or should I verify cooling conditions too?",Heat Dissipation Failure,c98d530bd3
+"When both low speed and temperature trend are moving toward the limit, is forced cooling or higher rpm the better fix?",Heat Dissipation Failure,c98d530bd3
+How can I tell if a sustained low thermal gradient at low speed is pointing to an upstream coolant or airflow problem?,Heat Dissipation Failure,1fa2bd4467
+Should I open a maintenance ticket if the machine has a low thermal gradient at low speed but hasn’t actually failed yet?,Heat Dissipation Failure,1fa2bd4467
+Is low thermal gradient during slow operation an early warning for heat dissipation issues?,Heat Dissipation Failure,1fa2bd4467
+What upstream systems should I check first when I see a sustained low thermal gradient at low speed?,Heat Dissipation Failure,1fa2bd4467
+"How serious is it when the thermal gradient stays low at low speed, and what’s the next step?",Heat Dissipation Failure,1fa2bd4467
+What signs should I look for if the machine is getting underpowered during the cut?,Power Failure,3bdafab7ac
+At what power level does a power failure start because the output is too low?,Power Failure,3bdafab7ac
+How can I tell if the process is being overloaded by too much mechanical power?,Power Failure,3bdafab7ac
+What’s the upper power limit where the machine moves into a power failure condition?,Power Failure,3bdafab7ac
+Why would a power failure happen when torque and speed are no longer in a safe range?,Power Failure,3bdafab7ac
+"What usually causes a power failure alarm on this machine, and how is power actually calculated?",Power Failure,fa3303819f
+Why does the system show a power failure even though there’s no direct power sensor reading?,Power Failure,fa3303819f
+How do torque and rotational speed combine to give the power value in this fault case?,Power Failure,fa3303819f
+Can you explain the formula used to derive power from torque and rpm during a power failure check?,Power Failure,fa3303819f
+"If I’m troubleshooting a PWF fault, what should I know about where the power value comes from?",Power Failure,fa3303819f
+How do I spot a power failure from the sensor data without getting fooled by normal-looking torque or speed readings?,Power Failure,ed6de6dd8d
+"What sensor pattern usually points to a power failure, especially when torque and rotational speed seem to offset each other?",Power Failure,ed6de6dd8d
+"Should I check torque and speed separately, or is there a derived power value I need to watch for power failure detection?",Power Failure,ed6de6dd8d
+Can power failure still be present if torque or rotational speed looks in range on its own?,Power Failure,ed6de6dd8d
+What’s the usual signature of PWF in the readings when one signal is high and the other is low?,Power Failure,ed6de6dd8d
+What should I do when a power failure condition starts trending toward the low or high limit in the process?,Power Failure,54e5187ac8
+How can I use power monitoring in a real-time dashboard to catch a power failure early?,Power Failure,54e5187ac8
+"If power drifts outside the normal band without any setpoint change, what should I check on the drive or motor?",Power Failure,54e5187ac8
+"When power is moving toward 3500 W or 9000 W, is it better to adjust torque or speed first?",Power Failure,54e5187ac8
+What is the best operator action for preventing a power failure before the process hits the boundary?,Power Failure,54e5187ac8
+"For a Power Failure issue, how should we handle escalation and what safety risks should we watch for?",Power Failure,78b97cfea5
+Is overpower above 9000 W considered more urgent than underpower in a Power Failure case?,Power Failure,78b97cfea5
+"What’s the main mechanical risk during a PWF event, and does it need higher-priority escalation?",Power Failure,78b97cfea5
+"When the machine hits an overpower condition, should we treat it as a higher-priority safety concern than low power?",Power Failure,78b97cfea5
+"In a power failure scenario, does going over 9000 W mean more chance of equipment damage and faster escalation?",Power Failure,78b97cfea5
+"How do I know if this overstrain failure is happening on the machine, and what should I look for in the torque and tool-wear data?",Overstrain Failure,da179b1e6d
+Why would the same wear and torque readings be fine on one product variant but trip a failure on another one?,Overstrain Failure,da179b1e6d
+"What strain indicator value should I treat as the limit for low, medium, and high quality parts before overstrain kicks in?",Overstrain Failure,da179b1e6d
+"Does overstrain failure come from just high torque, or is it the combination of torque and tool wear that matters here?",Overstrain Failure,da179b1e6d
+"If I’m monitoring predictive maintenance, how do I compare the strain indicator against the variant-specific threshold to catch this failure early?",Overstrain Failure,da179b1e6d
+What usually causes an overstrain failure in predictive maintenance terms?,Overstrain Failure,6fda618d5b
+How do tool wear and applied torque combine to create the strain indicator?,Overstrain Failure,6fda618d5b
+Is there a simple formula for estimating overstrain risk from wear and torque?,Overstrain Failure,6fda618d5b
+Can overstrain failure be explained as a buildup of strain from a worn tool under load?,Overstrain Failure,6fda618d5b
+What factors should I check first when trying to trace the root cause of OSF?,Overstrain Failure,6fda618d5b
+"How do I tell if an OSF case is really there from the sensor data, and which fields do I need to look at?",Overstrain Failure,b2d23ef2a6
+"For Overstrain Failure, should I be checking tool wear and torque separately, or is there some combined value that matters more?",Overstrain Failure,b2d23ef2a6
+"Do the OSF limits change by machine type, or is there one threshold that works for every variant?",Overstrain Failure,b2d23ef2a6
+"Can a worn tool at moderate torque and a new tool at high torque both end up as OSF, or is only one of those actually a failure?",Overstrain Failure,b2d23ef2a6
+"What usually goes wrong when people diagnose OSF, especially if they use the same limit for all variants?",Overstrain Failure,b2d23ef2a6
+What should I do when an OSF alarm shows up on the machine?,Overstrain Failure,e9380cebc6
+"Do I need to include the product type, like L, M, or H, when checking for overstrain failure risk?",Overstrain Failure,e9380cebc6
+"For long runs on the high-end variant, should I watch just the current torque or the wear multiplied by torque over time?",Overstrain Failure,e9380cebc6
+"If the batch is close to the OSF threshold, is it better to lower the torque setting or change the tool sooner?",Overstrain Failure,e9380cebc6
+Can a simple threshold check without variant info misread the overstrain failure risk?,Overstrain Failure,e9380cebc6
+"What should I do when an overstrain threshold gets breached, and is it more urgent than TWF alone?",Overstrain Failure,fc4efb8a87
+How serious is OSF in terms of actual mechanical damage or failure risk?,Overstrain Failure,fc4efb8a87
+Can OSF lead to tool breakage or workpiece failure during operation?,Overstrain Failure,fc4efb8a87
+Why is a threshold breach under overstrain failure treated as a higher-priority alarm?,Overstrain Failure,fc4efb8a87
+What safety response is recommended when OSF shows up on predictive maintenance monitoring?,Overstrain Failure,fc4efb8a87
+"How can I tell if a random failure is happening when there’s no torque, temperature, speed, or wear pattern showing up?",Random Failure,5a9b380c35
+"Does RNF show any sensor signature at all, or is it just a background failure that can happen in any machine state?",Random Failure,5a9b380c35
+What should I expect from a random failure if it doesn’t depend on the readings from the machine?,Random Failure,5a9b380c35
+"Is there any way to predict RNF from process data, or does it happen independently of all sensor inputs?",Random Failure,5a9b380c35
+"Why would a random failure occur even when torque, temperature, speed, and wear all look normal?",Random Failure,5a9b380c35
+What usually causes a Random Failure when none of the other failure mechanisms fit?,Random Failure,b4c5d8e838
+"In predictive maintenance, why would a machine still have a small chance of random failure?",Random Failure,b4c5d8e838
+What kinds of issues are counted as random failures instead of the other modeled failure modes?,Random Failure,b4c5d8e838
+How is the residual failure risk handled for each process instance in the source dataset?,Random Failure,b4c5d8e838
+Why does the model apply about a 0.1% failure probability even when the machine looks normal?,Random Failure,b4c5d8e838
+"Is there any sensor pattern or signature that can reliably point to an RNF event, or is it basically random by design?",Random Failure,540eb89eaa
+"Can we predict RNF from machine sensors like air temp, process temp, speed, torque, or tool wear, or does that usually fail?",Random Failure,540eb89eaa
+"If a model says it found a strong sensor-based cause for an RNF failure, should I trust that result or assume it may be overfitting?",Random Failure,540eb89eaa
+What should I expect from any rule or predictive model when it tries to forecast RNF using sensor features?,Random Failure,540eb89eaa
+"Does RNF have any real correlation with operating conditions, or should we treat it as having no sensor linkage at all?",Random Failure,540eb89eaa
+"What should we do when a random failure shows up, and is there any point in trying to build sensor-based warning rules for it?",Random Failure,82793c924f
+How should RNF incidents be handled in maintenance reporting so they don’t get mixed up with other failure causes?,Random Failure,82793c924f
+"If RNF is just background risk, what kind of reliability measures actually help reduce its impact?",Random Failure,82793c924f
+"Should random failures be included in predictive-maintenance alarm logic, or is that the wrong approach?",Random Failure,82793c924f
+What are the best practical steps for dealing with RNF events on the plant floor?,Random Failure,82793c924f
+How should we handle a random failure event when it can’t really be predicted ahead of time?,Random Failure,2d6db8473b
+What’s the best response approach for RNF if prevention isn’t realistic?,Random Failure,2d6db8473b
+"When a random failure happens, should the priority be catching it fast and containing it instead of trying to prevent it?",Random Failure,2d6db8473b
+What escalation steps make sense for unpredictable failures like RNF?,Random Failure,2d6db8473b
+"For random failures, is the main focus on quick detection after the fact and limiting the damage?",Random Failure,2d6db8473b
+How can I tell which condition actually triggered the maintenance incident before I write the report?,General Triage and Escalation SOP,31933c9da0
+"What exact checks should I use to classify this as TWF, HDF, PWF, OSF, or RNF?",General Triage and Escalation SOP,31933c9da0
+"If the computed power is outside 3500 to 9000 W, how urgent is the response and what severity should I assign?",General Triage and Escalation SOP,31933c9da0
+"When tool wear and torque cross the variant threshold, do I treat it as OSF and escalate immediately?",General Triage and Escalation SOP,31933c9da0
+"If a failure is flagged but none of the rules fired, how should I handle the severity and review process?",General Triage and Escalation SOP,31933c9da0
+What exact conditions mean I should stop the production line right away during an incident?,General Triage and Escalation SOP,811e19f510
+"If the computed power goes above 9000 W, do I need to halt the machine immediately?",General Triage and Escalation SOP,811e19f510
+When does tool wear multiplied by torque require an instant stop instead of waiting for maintenance?,General Triage and Escalation SOP,811e19f510
+"If two failure conditions happen at the same time, should I shut the line down even if the issue seems minor?",General Triage and Escalation SOP,811e19f510
+When can I just flag the issue for the next maintenance window instead of stopping production?,General Triage and Escalation SOP,811e19f510
+"What needs to go into an incident report, and how do I decide if it goes straight to the line supervisor or just into maintenance queue?",General Triage and Escalation SOP,bc2c341df0
+"When I’m writing up an alarm or fault, what details should I include about the triggered condition, severity, and corrective action?",General Triage and Escalation SOP,bc2c341df0
+"How do I tell whether a predicted failure is real enough to report as the actual root cause, or do I need to verify the derived feature first?",General Triage and Escalation SOP,bc2c341df0
+"For a high-severity incident, who do I escalate it to right away, and what should be mentioned in the report?",General Triage and Escalation SOP,bc2c341df0
+"If the system flags a condition, what’s the proper way to document it so the report covers thresholds, response timing, and whether the machine must stop?",General Triage and Escalation SOP,bc2c341df0
+"What raw sensor and process fields are included in the AI4I dataset, and what does each one represent?",Sensor and Derived Feature Reference,0bfeee1a18
+"Does the AI4I data record product type along with temperature, speed, torque, and tool wear values?",Sensor and Derived Feature Reference,0bfeee1a18
+"Which measurements in the AI4I dataset are taken in Kelvin, and which one is given in rpm or Nm?",Sensor and Derived Feature Reference,0bfeee1a18
+"What does the process temperature field mean in the AI4I dataset, and how is it different from air temperature?",Sensor and Derived Feature Reference,0bfeee1a18
+"How is tool wear tracked in the AI4I dataset, and what unit is used for it?",Sensor and Derived Feature Reference,0bfeee1a18
+"What derived values do I need to calculate before trying to diagnose the failure modes, and what raw sensor fields feed into each one?",Sensor and Derived Feature Reference,a6e115a7d3
+"For HDF, PWF, and OSF, which measurements should I look at first, and are any of them just simple combinations instead of raw readings?",Sensor and Derived Feature Reference,a6e115a7d3
+Can you give me a quick mapping of each failure mode to the exact fields I need to check on the machine?,Sensor and Derived Feature Reference,a6e115a7d3
+"Which fault can be detected directly from tool wear, and which ones need more than one input to work out the root cause?",Sensor and Derived Feature Reference,a6e115a7d3
+"When I'm setting up a diagnostic check, what should I compute from temperature, torque, speed, and tool wear before classifying the fault?",Sensor and Derived Feature Reference,a6e115a7d3
+How long can a tool run before wear starts becoming a real concern even if everything else looks normal?,Tool Wear Failure,6974169956
+"If torque, temperature, and speed all stay normal, can the tool still be close to failing from wear?",Tool Wear Failure,6974169956
+Is long uninterrupted runtime by itself a warning sign for tool wear failure?,Tool Wear Failure,6974169956
+Does this wear mode depend more on elapsed running time than on load or stress?,Tool Wear Failure,6974169956
+Around what runtime should I start expecting the chance of tool wear failure to rise fast?,Tool Wear Failure,6974169956
+Can I rely on torque to tell me the tool is wearing out before it actually fails?,Tool Wear Failure,c8b352cdce
+"Is rotational speed a good early warning for tool wear failure, or should I watch something else?",Tool Wear Failure,c8b352cdce
+"For tool wear failure, what should I monitor instead of torque and speed readings?",Tool Wear Failure,c8b352cdce
+Why don't torque spikes give me a dependable heads-up for tool wear problems?,Tool Wear Failure,c8b352cdce
+What's the best indicator to track if I want to catch tool wear before it turns into a failure?,Tool Wear Failure,c8b352cdce
+"At around 230 minutes of tool wear, does that mean the machine has already failed, or is it still just a warning zone?",Tool Wear Failure,6fe5c2d247
+"If the tool wear reading is in the 200–240 minute range, should I treat it as a failure or only a high-risk condition?",Tool Wear Failure,6fe5c2d247
+"Can a unit still keep running normally when tool wear is around 230 minutes, or does that usually mean it’s done for?",Tool Wear Failure,6fe5c2d247
+"Should I log 230 minutes of tool wear as an actual failure, or only note it for inspection and planned replacement?",Tool Wear Failure,6fe5c2d247
+"When tool wear gets near 230 minutes, is it better to schedule a tool change right away instead of assuming the machine has broken down?",Tool Wear Failure,6fe5c2d247
+Why does my machine start overheating and slowing down when it’s running at low speed?,Heat Dissipation Failure,b10299f726
+Could a small gap between process temperature and air temperature be the reason the heat isn’t leaving the machine?,Heat Dissipation Failure,b10299f726
+What should I check if the rotor is below about 1380 rpm and the unit seems to trap heat?,Heat Dissipation Failure,b10299f726
+Is heat dissipation failure likely when airflow drops and the machine isn’t stirring things up enough?,Heat Dissipation Failure,b10299f726
+How do I tell if this is a heat dissipation problem and not just a simple speed issue?,Heat Dissipation Failure,b10299f726
+"Is low RPM by itself enough to cause a heat dissipation failure, or does something else have to happen too?",Heat Dissipation Failure,dab0941fe4
+"When I see the machine running slow, should I worry about HDF right away or check another condition first?",Heat Dissipation Failure,dab0941fe4
+What combination of speed and temperature difference actually points to HDF in this machine?,Heat Dissipation Failure,dab0941fe4
+"Can a machine be running under 1380 rpm and still be fine, or is that always a bad sign?",Heat Dissipation Failure,dab0941fe4
+Why is it risky to diagnose HDF from rotational speed alone instead of looking at the temperature gradient too?,Heat Dissipation Failure,dab0941fe4
+How can I spot an early heat dissipation issue before the machine actually fails?,Heat Dissipation Failure,ed04edaa26
+Should I be tracking the temperature gap instead of just the raw air and process temperatures?,Heat Dissipation Failure,ed04edaa26
+What combo of readings should I watch when I want to catch this failure mode sooner?,Heat Dissipation Failure,ed04edaa26
+Is there a specific temp difference and spindle speed range that points to heat dissipation trouble?,Heat Dissipation Failure,ed04edaa26
+Why would the machine look normal on both temperatures but still be at risk of heat dissipation failure?,Heat Dissipation Failure,ed04edaa26
+Why would the motor seem weak even if the torque reading looks okay?,Power Failure,4598d51056
+What does it mean when the calculated mechanical power drops below 3500 W during a cut?,Power Failure,4598d51056
+Can low rotational speed make the machine feel underpowered even with decent torque?,Power Failure,4598d51056
+"How do I check whether the power issue is coming from torque, speed, or both?",Power Failure,4598d51056
+"Is the actual power value something the system measures directly, or is it calculated from torque and rpm?",Power Failure,4598d51056
+"Can very high torque with very low rpm be a sign of Power Failure, even if each value looks okay by itself?",Power Failure,d2e0f66011
+"If the machine shows low speed but torque is unusually high, should I worry about a PWF condition?",Power Failure,d2e0f66011
+Is it normal to ignore torque or speed on their own and just check the calculated power for Power Failure?,Power Failure,d2e0f66011
+Can a big mismatch between rotational speed and torque push power outside the safe range during predictive maintenance?,Power Failure,d2e0f66011
+Why would very high speed with very low torque still point to a Power Failure issue?,Power Failure,d2e0f66011
+How do I work out machine power from torque and rpm in practice?,Power Failure,556fd12d0f
+What’s the formula for calculating power from torque and rotational speed?,Power Failure,556fd12d0f
+"If my speed reading is in rpm, how do I convert it when checking power from torque?",Power Failure,556fd12d0f
+At what calculated power level does a power failure get flagged as underpowered or overpowered?,Power Failure,556fd12d0f
+"Should I monitor torque and speed separately, or track the derived power value for this fault?",Power Failure,556fd12d0f
+Can the same tool wear and torque be fine on one product variant but still trip an overstrain failure on another?,Overstrain Failure,d87b9c0dfa
+Why does one global overstrain threshold give false alarms on low-quality parts and miss issues on high-quality ones?,Overstrain Failure,d87b9c0dfa
+Do I need to check the product type before judging whether Tool wear × Torque is too high?,Overstrain Failure,d87b9c0dfa
+"What are the separate overstrain limits for Low, Medium, and High quality variants?",Overstrain Failure,d87b9c0dfa
+"If two jobs have the same wear and torque, why can one pass and the other fail depending on the variant?",Overstrain Failure,d87b9c0dfa
+"What exactly is the strain indicator, and how is it calculated from tool wear and torque?",Overstrain Failure,433090e42a
+Why do we use strain indicator instead of looking at tool wear or torque by themselves when checking OSF risk?,Overstrain Failure,433090e42a
+"At what strain indicator value does overstrain failure usually happen for the L, M, and H variants?",Overstrain Failure,433090e42a
+Can a tool with only moderate wear still cause overstrain failure if the torque gets too high?,Overstrain Failure,433090e42a
+How can I tell if my machine is close to an OSF event using the combined wear-and-torque value?,Overstrain Failure,433090e42a
+"Can a brand-new tool still hit overstrain if the torque gets high enough, or is low wear always safe?",Overstrain Failure,72e90335be
+How do I check whether tool wear and torque together are enough to trigger overstrain on a given type?,Overstrain Failure,72e90335be
+"If a tool is barely worn, does that automatically mean it won’t fail from strain under heavy load?",Overstrain Failure,72e90335be
+"What should I compare against the overstrain limit for an L, M, or H tool type?",Overstrain Failure,72e90335be
+"Is the strain check based on wear alone, or do I need to multiply wear by torque before judging safety?",Overstrain Failure,72e90335be
+"Why would a machine still fail even when torque, temperature, speed, and tool wear all look normal?",Random Failure,50acea25e7
+"If none of the usual failure triggers show up, should I still try to explain the breakdown from sensor data?",Random Failure,50acea25e7
+"In a predictive maintenance setup, is there a type of failure that happens basically as background risk with no clear sensor signature?",Random Failure,50acea25e7
+"How do I classify a breakdown when every reading seems fine and no TWF, HDF, PWF, or OSF condition was met?",Random Failure,50acea25e7
+Is it normal to see a rare machine failure that doesn’t seem tied to any operating condition or wear pattern?,Random Failure,50acea25e7
+Can I really build a predictive model for RNF failures if they don’t line up with any sensor readings?,Random Failure,cb2d1a82cd
+Why would a sensor-based model be a bad fit for random failures like RNF?,Random Failure,cb2d1a82cd
+"If a report says it can predict an RNF event from temperature, speed, torque, or tool wear, should I trust it?",Random Failure,cb2d1a82cd
+What’s the best way to reduce the impact of RNF failures if prediction won’t work well?,Random Failure,cb2d1a82cd
+Is it normal for this type of failure to show no clear correlation with machine sensors?,Random Failure,cb2d1a82cd
+"How should I log an incident when there’s no clear cause, instead of grouping it with TWF, HDF, PWF, or OSF stats?",Random Failure,13359538bd
+"Should random failures be counted in the same root-cause reports as the other failure modes, or kept separate?",Random Failure,13359538bd
+"For an uncaused failure, what’s the right response: try to prevent it, or focus on finding it fast and containing it?",Random Failure,13359538bd
+"If a machine event can’t be tied to any known mechanism, how should I handle it in predictive maintenance reporting?",Random Failure,13359538bd
+"What’s the best way to deal with random, unpredictable failures so they don’t mess up the failure data?",Random Failure,13359538bd
+"Who do I notify right away if we get a high-severity machine event like overpower, OSF, or anything that meets stop criteria?",General Triage and Escalation SOP,c0ed104e40
+"For lower-severity alarms like underpower, HDF, or TWF, should I send it to the line supervisor or just put it in the normal maintenance queue?",General Triage and Escalation SOP,c0ed104e40
+"Before I write up a root-cause report, do I need to compare the model’s failure prediction with the actual derived feature values like power, temp_diff, or strain_indicator?",General Triage and Escalation SOP,c0ed104e40
+What’s the right escalation path when the incident looks serious enough to halt the machine?,General Triage and Escalation SOP,c0ed104e40
+"If the prediction says one thing but the computed feature doesn’t match, what should I trust before documenting the failure cause?",General Triage and Escalation SOP,c0ed104e40
+How is the severity rating different from the rule for stopping the line right away?,General Triage and Escalation SOP,958fe04268
+"If a failure mode shows up as high severity, does that always mean I have to halt the line?",General Triage and Escalation SOP,958fe04268
+"What are the exact conditions that make me stop the line immediately, even if the triage severity looks lower?",General Triage and Escalation SOP,958fe04268
+"When I’m checking a fault, should I treat the severity table and the halt criteria as the same thing or separate checks?",General Triage and Escalation SOP,958fe04268
+"For predictive maintenance triage, how do I know whether a finding needs urgent investigation versus an actual line stop?",General Triage and Escalation SOP,958fe04268
+"Do I have to stop the line every time a failure condition shows up, or can I keep running until a real stop criterion is hit?",General Triage and Escalation SOP,7f5a1e5a56
+What exact conditions mean I should halt production immediately instead of just flagging the unit for the next maintenance window?,General Triage and Escalation SOP,7f5a1e5a56
+"If the power draw goes over 9000 W, is that always a hard stop for the machine?",General Triage and Escalation SOP,7f5a1e5a56
+How do I decide whether a wear and torque warning is serious enough to shut the line down right away?,General Triage and Escalation SOP,7f5a1e5a56
+"When multiple failure signals appear at once, do I need to stop the equipment, or is it still okay to wait for scheduled maintenance?",General Triage and Escalation SOP,7f5a1e5a56
+"What does the product type label L, M, or H actually tell me on the machine?",Sensor and Derived Feature Reference,117ffdb817
+"Why is the Type field important if it doesn’t show up in the HDF, PWF, or TWF calculations?",Sensor and Derived Feature Reference,117ffdb817
+"How does Low, Medium, or High product type change the overstrain failure limit?",Sensor and Derived Feature Reference,117ffdb817
+Can the same torque and tool wear readings be okay for one type but a failure for another?,Sensor and Derived Feature Reference,117ffdb817
+"What threshold values should I watch for on L, M, and H parts when checking overstrain risk?",Sensor and Derived Feature Reference,117ffdb817
+"What unit is the power feature in, and how is it calculated from torque and rpm?",Sensor and Derived Feature Reference,ca8be638d6
+"Does strain_indicator have a real physical unit, or is it just a derived index?",Sensor and Derived Feature Reference,ca8be638d6
+Why is strain_indicator shown as min·Nm instead of a standard engineering unit?,Sensor and Derived Feature Reference,ca8be638d6
+How do I interpret power in watts when the machine is running at a given torque and speed?,Sensor and Derived Feature Reference,ca8be638d6
+"Is strain_indicator only useful compared with its threshold, rather than as an absolute value?",Sensor and Derived Feature Reference,ca8be638d6
+"With Type M at 298 K air temp, 308 K process temp, 1600 rpm, 30 Nm torque, and 215 min wear, does this point to tool wear fault or something else?",Worked Diagnostic Examples,8c2f90045b
+What should I check first if the tool wear is 215 minutes but the speed and temperature readings don’t look like the other fault patterns?,Worked Diagnostic Examples,8c2f90045b
+"In this example, is the torque and speed combination high enough to explain the issue, or is it mainly a wear-only case?",Worked Diagnostic Examples,8c2f90045b
+"Does this reading need the machine stopped right away, or can it wait for the next maintenance window?",Worked Diagnostic Examples,8c2f90045b
+How urgent is a Type M case when only the wear band is hit and the power and strain numbers stay below their limits?,Worked Diagnostic Examples,8c2f90045b
+"For a Type L machine, how do I tell if a reading with air temp 295 K, process temp 300 K, speed 1200 rpm, torque 35 Nm, and tool wear 50 min points to HDF?",Worked Diagnostic Examples,e581e4ba19
+"In that example with 5 K temp difference and 1200 rpm, why does it count as HDF but not the other fault modes?",Worked Diagnostic Examples,e581e4ba19
+"What should I check first when the numbers show HDF only and the severity is medium, not a stop-now issue?",Worked Diagnostic Examples,e581e4ba19
+"If tool wear is only 50 min and the calculated power sits around 4398 W, does that rule out TWF, PWF, and OSF?",Worked Diagnostic Examples,e581e4ba19
+"For this diagnostic case, is it better to inspect the cooling or airflow path, and can I keep the line running while I do it?",Worked Diagnostic Examples,e581e4ba19
+"How do I check if this Type H reading is an overpowered PWF: air temp 300 K, process temp 311 K, speed 1800 rpm, torque 55 Nm, and tool wear 30 min?",Worked Diagnostic Examples,f28320728d
+Why would a machine at 1800 rpm and 55 Nm trigger a PWF alarm when the temps look normal and tool wear is only 30 minutes?,Worked Diagnostic Examples,f28320728d
+What calculation shows whether this setup is above the 9000 W limit and needs an immediate stop?,Worked Diagnostic Examples,f28320728d
+"Can you explain why this case is not TWF, HDF, or OSF, but still ends up as a high-severity PWF?",Worked Diagnostic Examples,f28320728d
+"For a reading with 300 K air temp, 311 K process temp, 1800 rpm, 55 Nm torque, and 30 min wear, should I halt the machine right away or wait for the next window?",Worked Diagnostic Examples,f28320728d
+"For this reading with Type L, 296 K air temp, 307 K process temp, 1400 rpm, 60 Nm, and 195 min wear, is OSF actually the fault here?",Worked Diagnostic Examples,dda4fe63ab
+Why does the strain indicator from 195 min and 60 Nm point to OSF even though the other values look normal?,Worked Diagnostic Examples,dda4fe63ab
+"What checks would rule out TWF, HDF, and PWF before calling this OSF on the machine?",Worked Diagnostic Examples,dda4fe63ab
+"Is 11,700 min·Nm enough to trigger an immediate stop, or just an operator escalation and inspection?",Worked Diagnostic Examples,dda4fe63ab
+"If the OSF threshold is 11,000, how close is this case to the automatic halt limit, and what would push it over?",Worked Diagnostic Examples,dda4fe63ab
+"How do I diagnose a Type H machine with air temp at 295 K, process temp at 300 K, speed 1200 rpm, torque 70 Nm, and tool wear 195 min?",Worked Diagnostic Examples,9cfa8e5555
+"With temp difference only 5 K and speed 1200 rpm, does that confirm a heat-delay fault on this reading?",Worked Diagnostic Examples,9cfa8e5555
+"At 70 Nm and 1200 rpm, what power comes out to, and is it still in the normal range for this case?",Worked Diagnostic Examples,9cfa8e5555
+Does 195 min of tool wear and 70 Nm torque trigger the overload strain condition here?,Worked Diagnostic Examples,9cfa8e5555
+"If heat-delay and overload-strain both show up together, do I need to stop the line right away even if neither one is over its own halt limit?",Worked Diagnostic Examples,9cfa8e5555
+"If my Type M machine is at 225 minutes of tool wear and everything else looks normal, should I count that as a TWF failure or just a warning?",Worked Diagnostic Examples,59e3729860
+"For a running Type M unit with 298 K air temp, 308 K process temp, 1600 rpm, 30 Nm torque, and 225 min wear, is it actually failed yet?",Worked Diagnostic Examples,59e3729860
+"How do I judge this case: tool wear is in the 200–240 minute zone, but the machine is still operating fine—do I log a fault or just schedule it for inspection?",Worked Diagnostic Examples,59e3729860
+"On a Type M machine, does 225 minutes of wear automatically mean TWF, or can it still be considered healthy if the rest of the readings are normal?",Worked Diagnostic Examples,59e3729860
+"With 1600 rpm and 30 Nm giving about 5.0 kW, plus 225 minutes of wear, should I mark this unit as failed or just put it on the watch list?",Worked Diagnostic Examples,59e3729860
+What are the usual signs that a heat dissipation problem is happening on the machine?,Heat Dissipation Failure,ae1dcf3957
+How can I tell if the cooling system is not keeping the machine temperature under control?,Heat Dissipation Failure,ae1dcf3957
+Why does the machine temperature keep climbing during long or heavy runs?,Heat Dissipation Failure,ae1dcf3957
+"Can a heat dissipation failure make the machine derate, alarm, or shut itself down?",Heat Dissipation Failure,ae1dcf3957
+What symptoms should I look for if I suspect poor heat removal in the process?,Heat Dissipation Failure,ae1dcf3957
+What usually causes Heat Dissipation Failure in a machine or process line?,Heat Dissipation Failure,b2a1fbed0a
+"Can blocked vents, dirty filters, or poor airflow lead to Heat Dissipation Failure?",Heat Dissipation Failure,b2a1fbed0a
+"Could a bad cooling fan, pump, heat exchanger, or coolant circuit be the root cause of Heat Dissipation Failure?",Heat Dissipation Failure,b2a1fbed0a
+How often does low or contaminated coolant or lubricant end up causing Heat Dissipation Failure?,Heat Dissipation Failure,b2a1fbed0a
+Can a faulty temperature sensor or too much process load trigger Heat Dissipation Failure?,Heat Dissipation Failure,b2a1fbed0a
+What temperature pattern usually shows up when a heat dissipation failure is starting?,Heat Dissipation Failure,a4415efbd0
+How can I tell if the temperature gap between the machine and its cooling medium is getting abnormal?,Heat Dissipation Failure,a4415efbd0
+Why would the temperature stay high even after I reduce the load?,Heat Dissipation Failure,a4415efbd0
+"What cooling-system signs like fan speed, flow, or pressure should I watch for with this failure?",Heat Dissipation Failure,a4415efbd0
+What sensor readings point to a heat dissipation problem on the machine or process?,Heat Dissipation Failure,a4415efbd0
+What should I do first when a heat dissipation failure shows up on the machine?,Heat Dissipation Failure,c98d530bd3
+How do I check whether the temperature reading is actually correct during a cooling issue?,Heat Dissipation Failure,c98d530bd3
+What parts should I inspect and clean when the machine is overheating because of poor heat dissipation?,Heat Dissipation Failure,c98d530bd3
+What coolant checks are needed if the cooling system seems weak or the machine is running too hot?,Heat Dissipation Failure,c98d530bd3
+"When a heat dissipation fault happens, should I cut the load or keep running until the machine cools down?",Heat Dissipation Failure,c98d530bd3
+"What should I do right away if a machine starts overheating or I notice smoke, odor, or leakage?",Heat Dissipation Failure,1fa2bd4467
+When is it unsafe to open the cooling system during a heat dissipation problem?,Heat Dissipation Failure,1fa2bd4467
+"Do I need lockout/tagout before checking fans, pumps, or other internal parts after overheating?",Heat Dissipation Failure,1fa2bd4467
+Which signs mean I should shut the machine down because of heat dissipation failure?,Heat Dissipation Failure,1fa2bd4467
+"If the overheating keeps coming back, who should I report it to?",Heat Dissipation Failure,1fa2bd4467
+What signs usually show up when the machine is under too much load or torque and starts failing?,Overstrain Failure,da179b1e6d
+How can I tell if overstrain is causing slower speed or worse process quality during operation?,Overstrain Failure,da179b1e6d
+"What symptoms point to excessive vibration, deformation, or mechanical stress in a machine component?",Overstrain Failure,da179b1e6d
+What kinds of damage should I watch for if a tool or part is being pushed past its limit?,Overstrain Failure,da179b1e6d
+"Can overstrain failure trigger alarms, and if so, what warning messages or faults might appear?",Overstrain Failure,da179b1e6d
+What usually causes an overstrain failure on the machine or tool?,Overstrain Failure,6fda618d5b
+"Can a worn or damaged tool lead to overstrain failure, and why does that happen?",Overstrain Failure,6fda618d5b
+"How do misalignment, jamming, or wrong feed settings contribute to overstrain failure?",Overstrain Failure,6fda618d5b
+Could using the wrong operating parameters or tooling be the reason for an overstrain failure?,Overstrain Failure,6fda618d5b
+Which mechanical parts or installation issues can make an overstrain failure more likely?,Overstrain Failure,6fda618d5b
+What sensor readings usually show up when overstrain failure starts on a machine?,Overstrain Failure,b2d23ef2a6
+"How can I tell from torque, force, strain, or motor current that the machine is being overstrained?",Overstrain Failure,b2d23ef2a6
+What does it mean if load keeps going up while speed or output drops off?,Overstrain Failure,b2d23ef2a6
+Can rising vibration or acoustic emission under load be a sign of overstrain failure?,Overstrain Failure,b2d23ef2a6
+What combination of tool-wear signs and load measurements points to overstrain failure?,Overstrain Failure,b2d23ef2a6
+What should I do first when an overstrain failure shows up during operation?,Overstrain Failure,e9380cebc6
+"How do I check the tool and loaded parts for wear, cracks, deformation, or looseness after an overstrain issue?",Overstrain Failure,e9380cebc6
+"What machine settings and conditions should I inspect when overstrain failure happens, like alignment, lubrication, feed, or clamping?",Overstrain Failure,e9380cebc6
+When should worn or damaged tooling and components be replaced after an overstrain failure?,Overstrain Failure,e9380cebc6
+How can I verify that the machine and tool ratings are suitable for the job to avoid overstrain failure?,Overstrain Failure,e9380cebc6
+"When should I stop the machine right away if I suspect overstrain, like cracking, heavy vibration, jamming, deformation, or parts about to break?",Overstrain Failure,fc4efb8a87
+What safety steps should I take to keep people clear of stored energy and possible flying fragments during an overstrain issue?,Overstrain Failure,fc4efb8a87
+"Do I need to isolate the mechanical, hydraulic, pneumatic, and electrical energy before checking an overstrain failure?",Overstrain Failure,fc4efb8a87
+Who should I notify if the machine keeps having overstrain events?,Overstrain Failure,fc4efb8a87
+"For overstrain failure, what escalation and safety precautions should the operator follow before inspection?",Overstrain Failure,fc4efb8a87
+"What signs usually show up when there’s a power failure on the machine, like a sudden stop or it won’t start at all?",Power Failure,3bdafab7ad
+How can I tell if the motor is getting unstable speed or not enough torque because of a power issue?,Power Failure,3bdafab7ad
+"What kind of alarms should I expect during a power failure, such as overload, undervoltage, or overcurrent warnings?",Power Failure,3bdafab7ad
+"Could unusual power draw, either too high or too low, be a symptom of the machine losing power?",Power Failure,3bdafab7ad
+"When the machine has power failure, what symptoms should I check first before assuming a mechanical fault?",Power Failure,3bdafab7ad
+What usually causes a power failure on this machine?,Power Failure,fa3303819e
+"Could this be from a supply interruption, voltage imbalance, or a loose connection?",Power Failure,fa3303819e
+"What parts should I check first for a power-failure fault, like the motor, drive, inverter, or breaker?",Power Failure,fa3303819e
+"Can mechanical issues like overload, binding, misalignment, or too much friction trigger this failure?",Power Failure,fa3303819e
+Is a bad control command or a faulty sensor able to cause the power failure alarm?,Power Failure,fa3303819e
+How can I tell from the sensor data that a power failure is happening on the machine?,Power Failure,ed6de6dd8e
+"What kind of voltage, current, or speed pattern usually shows up right before a power failure?",Power Failure,ed6de6dd8e
+"If the commanded speed and the measured speed don't match, could that be a sign of power failure?",Power Failure,ed6de6dd8e
+What sensor changes should I look for when current or power goes up but the speed drops?,Power Failure,ed6de6dd8e
+Can a sudden dip or fluctuation in voltage be used to identify a power failure event?,Power Failure,ed6de6dd8e
+What should I check first when I get a power failure alarm on this machine?,Power Failure,54e5187ac9
+How do I tell if the incoming electrical supply is okay during a power failure fault?,Power Failure,54e5187ac9
+Which parts should I inspect on the drive side when the machine trips on power failure?,Power Failure,54e5187ac9
+"How can I compare commanded and actual speed, torque, current, and power to troubleshoot a power failure issue?",Power Failure,54e5187ac9
+"What mechanical problems like binding, overload, or misalignment can trigger a power failure fault, and what should I fix before resetting?",Power Failure,54e5187ac9
+When should I shut the equipment down immediately after a power failure or electrical fault?,Power Failure,78b97cfea6
+Who is allowed to test energized electrical equipment during a power failure issue?,Power Failure,78b97cfea6
+What lockout/tagout steps should I follow before opening up the machine after a power event?,Power Failure,78b97cfea6
+How do I check that the equipment is truly de-energized before doing an internal inspection?,Power Failure,78b97cfea6
+When should a repeated power trip or unexplained outage be escalated to electrical or maintenance support?,Power Failure,78b97cfea6

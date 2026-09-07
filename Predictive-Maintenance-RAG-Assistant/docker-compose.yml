@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: pm-assistant-pg
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pswd
+      POSTGRES_DB: pm_assistant
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - monitoring
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d pm_assistant"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pm-assistant-app
+    env_file:
+      - .env
+    environment:
+      # override .env's localhost setting - inside the compose network the
+      # database is reachable at the "postgres" service name, not localhost
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: pm_assistant
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pswd
+    ports:
+      - "8501:8501"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+networks:
+  monitoring:
+    name: monitoring
+
+volumes:
+  pgdata:

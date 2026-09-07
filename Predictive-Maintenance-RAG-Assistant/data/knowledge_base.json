@@ -1,0 +1,570 @@
+[
+  {
+    "id": "299b2d2994",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "TWF",
+    "section": "Tool Wear Failure",
+    "question": "What are the symptoms of Tool Wear Failure?",
+    "answer": "Tool wear time accumulates into a critical band, typically between 200 and 240 minutes of continuous use. Within this band, failure probability rises sharply and can occur without any other sensor anomaly \u2014 torque, temperature, and rotational speed may all look nominal right up to the failure event."
+  },
+  {
+    "id": "7735d88102",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "TWF",
+    "section": "Tool Wear Failure",
+    "question": "What is the root cause of Tool Wear Failure?",
+    "answer": "Progressive mechanical degradation of the cutting tool edge. As wear accumulates, the tool's ability to cut cleanly degrades, eventually leading to tool fracture or process failure. This is a wear-out failure, not a stress-overload failure \u2014 it is time/usage-driven rather than load-driven."
+  },
+  {
+    "id": "e8a1fe10fc",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "TWF",
+    "section": "Tool Wear Failure",
+    "question": "What is the sensor signature of Tool Wear Failure?",
+    "answer": "- Primary indicator: `Tool wear [min]` in the 200\u2013240 range\n- Torque and rotational speed are **not** reliable leading indicators for TWF \u2014 this is the key diagnostic distinction from OSF and PWF\n- No air/process temperature anomaly expected\n\n**False-positive note:** A unit with tool wear in the 200\u2013240 band that has NOT failed is common \u2014 this is a probabilistic band, not a deterministic threshold. Do not treat \"in-band\" as \"failed.\""
+  },
+  {
+    "id": "157781c070",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "TWF",
+    "section": "Tool Wear Failure",
+    "question": "What is the recommended action for Tool Wear Failure?",
+    "answer": "1. Flag any unit with tool wear > 200 min for priority inspection queue, regardless of other readings.\n2. Schedule tool replacement before reaching 240 min if the unit is queued for a long run.\n3. Do not rely on torque spikes as an early warning \u2014 by the time torque changes, failure may already be underway."
+  },
+  {
+    "id": "70791c7ac7",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "TWF",
+    "section": "Tool Wear Failure",
+    "question": "What are the escalation and safety considerations for Tool Wear Failure?",
+    "answer": "TWF is typically a quality/downtime issue rather than an acute safety hazard. Escalate to line supervisor for scheduling; halt is not automatically required unless tool fracture risk is confirmed by visual inspection."
+  },
+  {
+    "id": "ae1dcf3957",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "What are the symptoms of Heat Dissipation Failure?",
+    "answer": "Heat dissipation failure occurs when the process is unable to shed heat effectively during low-speed operation. It is defined jointly by two conditions occurring together:\n\n1. The gap between process temperature and air temperature is small \u2014 specifically, `Process temperature [K] \u2212 Air temperature [K] < 8.6 K`\n2. Rotational speed is low \u2014 specifically, `Rotational speed [rpm] < 1380`\n\nNeither condition alone is sufficient; HDF is a **combined-condition** failure mode."
+  },
+  {
+    "id": "b2a1fbed0a",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "What is the root cause of Heat Dissipation Failure?",
+    "answer": "At low rotational speed, airflow and mechanical agitation around the tool/workpiece drop, reducing convective heat transfer. If the process and ambient temperatures are already close together (small thermal gradient), there is insufficient thermal driving force to dissipate process heat, and heat accumulates locally."
+  },
+  {
+    "id": "a4415efbd0",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "What is the sensor signature of Heat Dissipation Failure?",
+    "answer": "- Compute the derived feature `temp_diff = Process temperature \u2212 Air temperature`\n- Watch for `temp_diff < 8.6 K` AND `Rotational speed < 1380 rpm` simultaneously\n- Air and process temperature individually may look \"normal\" \u2014 it's the *gap* and the *speed* together that matter\n\n**Common misdiagnosis:** Do not diagnose HDF from rotational speed alone \u2014 many low-speed runs are entirely safe. The joint condition with `temp_diff` is what distinguishes a true HDF risk from normal low-speed operation."
+  },
+  {
+    "id": "c98d530bd3",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "What is the recommended action for Heat Dissipation Failure?",
+    "answer": "1. Add `temp_diff` as a monitored derived feature, not just raw temperatures.\n2. If a unit is running below 1380 rpm for an extended period, actively check the temperature gradient rather than assuming low speed is inherently safe.\n3. Consider forced cooling or increasing rotational speed if both conditions are trending toward the threshold simultaneously."
+  },
+  {
+    "id": "1fa2bd4467",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "What are the escalation and safety considerations for Heat Dissipation Failure?",
+    "answer": "Sustained low thermal gradient at low speed can be an early indicator of coolant or airflow system issues upstream \u2014 worth a maintenance ticket even if failure hasn't yet triggered."
+  },
+  {
+    "id": "3bdafab7ac",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "What are the symptoms of Power Failure?",
+    "answer": "Power failure is triggered when the mechanical power delivered to the process falls outside a safe operating band \u2014 either too low (insufficient power to complete the cut) or too high (overpowering the process).\n\nFailure occurs when:\n- `Power < 3500 W` (underpowered \u2014 torque too low relative to speed, risk of incomplete/stalled process), or\n- `Power > 9000 W` (overpowered \u2014 excessive torque relative to speed, risk of mechanical overload)"
+  },
+  {
+    "id": "fa3303819f",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "What is the root cause of Power Failure?",
+    "answer": "Power is a derived quantity, not a directly measured sensor value:\n\n```\nPower [W] = Torque [Nm] \u00d7 Rotational speed [rad/s]\n          = Torque [Nm] \u00d7 Rotational speed [rpm] \u00d7 (2\u03c0 / 60)\n```"
+  },
+  {
+    "id": "ed6de6dd8d",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "What is the sensor signature of Power Failure?",
+    "answer": "- Compute the derived `power` feature from torque and rotational speed; do not evaluate torque or speed in isolation\n- A torque or rotational speed reading that looks \"normal\" in isolation can still produce an out-of-band power value \u2014 always check the product, not the individual factors\n- Look for compensatory patterns: very high torque with very low speed (or vice versa) is the classic PWF signature\n\n**Common misdiagnosis:** Torque or rotational speed alone appearing \"in range\" does not rule out PWF \u2014 always check the computed power value."
+  },
+  {
+    "id": "54e5187ac8",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "What is the recommended action for Power Failure?",
+    "answer": "1. Compute and monitor `power` as a first-class derived feature in any real-time dashboard \u2014 do not rely on operators reading torque and speed separately.\n2. If power trends toward either boundary (3500 W or 9000 W), adjust torque or speed setpoints before the process reaches the limit.\n3. Investigate drive/motor calibration if power drifts outside band without an obvious setpoint change."
+  },
+  {
+    "id": "78b97cfea5",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "What are the escalation and safety considerations for Power Failure?",
+    "answer": "Overpower events (>9000 W) carry higher acute mechanical risk (potential for equipment damage) than underpower events and should be escalated with higher priority."
+  },
+  {
+    "id": "da179b1e6d",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "What are the symptoms of Overstrain Failure?",
+    "answer": "Overstrain failure occurs when accumulated mechanical strain \u2014 the product of tool wear and torque \u2014 exceeds a threshold. Critically, this threshold is **product-quality-dependent**: the same torque and wear values that are safe on one product variant can trigger failure on another.\n\nFailure occurs when `strain_indicator` exceeds a variant-specific minimum:\n\n| Quality variant | Threshold (approx.) |\n|---|---|\n| Low (L) | 11,000 min\u00b7Nm |\n| Medium (M) | 12,000 min\u00b7Nm |\n| High (H) | 13,000 min\u00b7Nm |"
+  },
+  {
+    "id": "6fda618d5b",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "What is the root cause of Overstrain Failure?",
+    "answer": "Strain accumulates as a function of both how worn the tool is and how much torque is currently being applied:\n\n```\nstrain_indicator = Tool wear [min] \u00d7 Torque [Nm]\n```"
+  },
+  {
+    "id": "b2d23ef2a6",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "What is the sensor signature of Overstrain Failure?",
+    "answer": "- Requires the `Type` (L/M/H) field alongside `Tool wear` and `Torque`\n- Compute `tool_wear \u00d7 torque` and compare against the variant-specific threshold, not a single fixed number\n- A worn tool under moderate torque and a fresh tool under high torque can both trigger OSF \u2014 the product, not either factor alone, is what matters\n\n**Common misdiagnosis:** Applying a single global threshold across all product variants will produce both false positives (on L variant) and false negatives (on H variant). Always check variant-specific bands."
+  },
+  {
+    "id": "e9380cebc6",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "What is the recommended action for Overstrain Failure?",
+    "answer": "1. Always join product `Type` (L/M/H) into the OSF check \u2014 a threshold check without variant context will misclassify risk.\n2. For long production runs on premium (H) variants, monitor cumulative wear\u00d7torque trend, not just current torque.\n3. If a batch is running near its variant threshold, consider reducing torque setpoint or scheduling earlier tool replacement."
+  },
+  {
+    "id": "fc4efb8a87",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "What are the escalation and safety considerations for Overstrain Failure?",
+    "answer": "OSF represents genuine mechanical overstrain risk and can lead to tool or workpiece failure. Treat threshold breaches as higher priority than TWF alone."
+  },
+  {
+    "id": "5a9b380c35",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "RNF",
+    "section": "Random Failure",
+    "question": "What are the symptoms of Random Failure?",
+    "answer": "Random failure occurs independently of any sensor reading. There is no torque, temperature, speed, or wear signature associated with it \u2014 it is a low-probability background failure rate applied uniformly regardless of process state."
+  },
+  {
+    "id": "b4c5d8e838",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "RNF",
+    "section": "Random Failure",
+    "question": "What is the root cause of Random Failure?",
+    "answer": "Represents failure modes not captured by the other four mechanisms: unmodeled component defects, unexpected external events, or residual failure risk inherent to any mechanical system. In the source dataset this is modeled as a small constant probability (~0.1%) applied to every process instance regardless of other conditions."
+  },
+  {
+    "id": "540eb89eaa",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "RNF",
+    "section": "Random Failure",
+    "question": "What is the sensor signature of Random Failure?",
+    "answer": "None. By design, RNF has no correlation with air temperature, process temperature, rotational speed, torque, or tool wear. Any model or rule attempting to predict RNF from sensor features should not be expected to perform meaningfully better than the base rate.\n\n**Common misdiagnosis:** If a report generator or model claims a strong sensor-based explanation for an RNF-labeled event, treat that explanation with skepticism \u2014 it is likely overfitting to coincidental patterns rather than a real causal signature."
+  },
+  {
+    "id": "82793c924f",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "RNF",
+    "section": "Random Failure",
+    "question": "What is the recommended action for Random Failure?",
+    "answer": "1. Do not attempt to build sensor-based early-warning rules for RNF specifically \u2014 treat it as irreducible background risk.\n2. Track RNF-labeled incidents separately in reporting so they don't get incorrectly attributed to other failure mechanisms during root-cause review.\n3. General reliability practices (redundancy, spare-part availability, rapid-response maintenance crews) mitigate RNF impact better than prediction."
+  },
+  {
+    "id": "2d6db8473b",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "RNF",
+    "section": "Random Failure",
+    "question": "What are the escalation and safety considerations for Random Failure?",
+    "answer": "Because RNF is unpredictable by nature, response protocol should focus on rapid detection-after-the-fact and containment rather than prevention."
+  },
+  {
+    "id": "31933c9da0",
+    "process_control": "predictive-maintenance",
+    "failure_mode": null,
+    "section": "General Triage and Escalation SOP",
+    "question": "How do I confirm the trigger and classify severity for a maintenance incident?",
+    "answer": "**Step 1 \u2014 Confirm the trigger.** Before generating an incident report, confirm which specific derived condition fired:\n- Tool wear in 200\u2013240 min band \u2192 possible TWF\n- `temp_diff < 8.6 K` AND `rotational speed < 1380 rpm` \u2192 possible HDF\n- Computed power outside 3500\u20139000 W \u2192 possible PWF\n- `tool_wear \u00d7 torque` over variant threshold \u2192 possible OSF\n- No condition met, but failure flagged \u2192 likely RNF\n\n**Step 2 \u2014 Severity classification.**\n\n| Failure mode | Typical severity | Response window |\n|---|---|---|\n| PWF (overpower) | High | Immediate |\n| OSF | High | Immediate |\n| PWF (underpower) | Medium | Same shift |\n| HDF | Medium | Same shift |\n| TWF | Low\u2013Medium | Next scheduled window |\n| RNF | Variable | Case-by-case, post-hoc review |"
+  },
+  {
+    "id": "811e19f510",
+    "process_control": "predictive-maintenance",
+    "failure_mode": null,
+    "section": "General Triage and Escalation SOP",
+    "question": "What are the halt criteria for a production line incident?",
+    "answer": "**Step 3 \u2014 Halt criteria.** Halt the process immediately if ANY of the following hold, regardless of which failure mode triggered:\n- Computed power exceeds 9000 W\n- `tool_wear \u00d7 torque` exceeds the variant threshold by more than 10%\n- Two or more failure conditions are met simultaneously (multi-mode failures are rare but higher severity)\n\nOtherwise, flag for inspection at the next scheduled maintenance window rather than halting \u2014 unnecessary halts carry their own production cost."
+  },
+  {
+    "id": "bc2c341df0",
+    "process_control": "predictive-maintenance",
+    "failure_mode": null,
+    "section": "General Triage and Escalation SOP",
+    "question": "What should an incident report contain and who should it be escalated to?",
+    "answer": "**Step 4 \u2014 Report contents.** Every incident report should state:\n1. Which condition(s) fired and their measured values vs. threshold\n2. Severity classification and recommended response window\n3. The specific corrective action from the relevant failure-mode document\n4. Whether immediate halt is required per the Halt Criteria section\n\n**Step 5 \u2014 Escalation contacts.** Route high-severity incidents to line supervisor immediately; route low/medium severity to the standard maintenance queue.\n\n**Caution on model confidence:** A model's predicted failure probability is not the same as a confirmed condition. Always cross-check the model's flag against the actual computed derived feature (power, temp_diff, strain_indicator) before writing a report that asserts a specific root cause."
+  },
+  {
+    "id": "0bfeee1a18",
+    "process_control": "predictive-maintenance",
+    "failure_mode": null,
+    "section": "Sensor and Derived Feature Reference",
+    "question": "What raw sensor fields does the AI4I dataset include?",
+    "answer": "| Field | Unit | Description |\n|---|---|---|\n| Type | L/M/H | Product quality variant |\n| Air temperature | K | Ambient temperature near the process |\n| Process temperature | K | Temperature of the process itself (typically air temp + ~10K + noise) |\n| Rotational speed | rpm | Spindle/tool rotational speed |\n| Torque | Nm | Applied torque |\n| Tool wear | min | Cumulative tool usage time |"
+  },
+  {
+    "id": "a6e115a7d3",
+    "process_control": "predictive-maintenance",
+    "failure_mode": null,
+    "section": "Sensor and Derived Feature Reference",
+    "question": "What derived features are needed for failure diagnosis, and which fields does each failure mode require?",
+    "answer": "| Derived feature | Formula | Used for |\n|---|---|---|\n| temp_diff | Process temperature \u2212 Air temperature | HDF |\n| power | Torque \u00d7 Rotational speed \u00d7 (2\u03c0 / 60) | PWF |\n| strain_indicator | Tool wear \u00d7 Torque | OSF |\n\n**Why derived features matter:** None of the four sensor-driven failure modes (TWF excepted, which uses tool wear directly) can be correctly diagnosed from raw sensor values alone. HDF, PWF, and OSF are all defined on combinations of two or more raw fields. Any retrieval or reasoning system working with this data should compute these derived features before attempting root-cause classification, not rely on an LLM to mentally combine raw values on the fly.\n\n**Quick lookup \u2014 which fields matter for which failure mode:**\n\n| Failure mode | Fields required |\n|---|---|\n| TWF | Tool wear |\n| HDF | Air temperature, Process temperature, Rotational speed |\n| PWF | Torque, Rotational speed |\n| OSF | Type, Tool wear, Torque |\n| RNF | None (background rate) |"
+  },
+  {
+    "id": "6974169956",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "TWF",
+    "section": "Tool Wear Failure",
+    "question": "The tool has been running for a long time without any other issues \u2014 should I be worried?",
+    "answer": "Yes \u2014 tool wear is a time-based failure mode, not a stress-based one. Once cumulative tool wear reaches roughly 200\u2013240 minutes, failure probability rises sharply even if torque, temperature, and rotational speed all look completely normal. Long uninterrupted runtime without other symptoms is exactly the pattern to watch for, since TWF does not reliably show up anywhere else."
+  },
+  {
+    "id": "c8b352cdce",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "TWF",
+    "section": "Tool Wear Failure",
+    "question": "Can I trust torque readings to warn me about tool wear before it fails?",
+    "answer": "No \u2014 torque and rotational speed are not reliable leading indicators for Tool Wear Failure. This is the key diagnostic distinction between TWF and OSF/PWF, which are defined on torque and speed. For TWF, monitor `Tool wear [min]` directly rather than waiting for a torque spike, which may not appear until the failure is already underway."
+  },
+  {
+    "id": "6fe5c2d247",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "TWF",
+    "section": "Tool Wear Failure",
+    "question": "If a machine's tool wear is at 230 minutes, has it definitely failed?",
+    "answer": "Not necessarily. The 200\u2013240 minute band is a probabilistic risk zone, not a deterministic failure threshold \u2014 plenty of units run with tool wear in this range and do not fail. Treat 230 minutes as a strong signal to prioritize inspection and schedule tool replacement, not as confirmation that a failure has occurred. Don't report it as a failure in an incident log unless it's corroborated by an actual halt or defect."
+  },
+  {
+    "id": "b10299f726",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "My equipment is running slowly and seems to be overheating \u2014 what's going on?",
+    "answer": "This is the classic Heat Dissipation Failure pattern: at low rotational speed, airflow and mechanical agitation drop, which reduces how effectively heat is carried away from the process. If the process temperature and ambient (air) temperature are already close together \u2014 specifically `Process temperature \u2212 Air temperature < 8.6 K` \u2014 there isn't enough of a thermal gradient to push the heat out, so it accumulates. Check both `Rotational speed [rpm] < 1380` and the temperature gap together; neither alone confirms HDF."
+  },
+  {
+    "id": "dab0941fe4",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "Is running the machine at low RPM always risky?",
+    "answer": "No. Low rotational speed by itself is not dangerous \u2014 many low-speed runs are entirely safe. HDF only occurs when low speed (`< 1380 rpm`) is combined with a small temperature gradient (`temp_diff < 8.6 K`) at the same time. Diagnosing HDF from rotational speed alone is a common misdiagnosis; always check the joint condition, not either factor in isolation."
+  },
+  {
+    "id": "ed04edaa26",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "What should I monitor to catch Heat Dissipation Failure early?",
+    "answer": "Compute `temp_diff = Process temperature \u2212 Air temperature` as a first-class derived feature, and watch for it to drop below 8.6 K at the same time rotational speed drops below 1380 rpm. Raw air and process temperatures can each look 'normal' individually while the gap between them is what actually signals risk, so track the gap and the speed together rather than either raw sensor value."
+  },
+  {
+    "id": "4598d51056",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "The motor feels underpowered during the cut \u2014 what could cause that?",
+    "answer": "Underpowering happens when the computed mechanical power falls below 3500 W \u2014 this reflects torque that's too low relative to the current rotational speed, which risks an incomplete or stalled process. Power isn't measured directly; it's derived as `Power [W] = Torque [Nm] \u00d7 Rotational speed [rpm] \u00d7 (2\u03c0 / 60)`. A torque reading that looks fine on its own can still combine with rotational speed to produce an underpowered result, so always check the computed power value rather than torque alone."
+  },
+  {
+    "id": "d2e0f66011",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "Is it a problem if torque is very high but rotational speed is very low (or vice versa)?",
+    "answer": "It can be \u2014 that compensatory pattern (very high torque with very low speed, or very high speed with very low torque) is the classic Power Failure signature. Because `Power = Torque \u00d7 Rotational speed \u00d7 (2\u03c0/60)`, an extreme combination in either direction can push the computed power outside the safe 3500\u20139000 W band even when neither individual value looks alarming on its own. Always evaluate the computed power, not torque or speed in isolation."
+  },
+  {
+    "id": "556fd12d0f",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "How exactly is machine power calculated from torque and speed?",
+    "answer": "`Power [W] = Torque [Nm] \u00d7 Rotational speed [rad/s]`, and since rotational speed is usually recorded in rpm, that's `Torque [Nm] \u00d7 Rotational speed [rpm] \u00d7 (2\u03c0 / 60)`. Power Failure triggers when this computed value falls below 3500 W (underpowered) or above 9000 W (overpowered) \u2014 monitor it as its own derived metric rather than reading torque and speed separately."
+  },
+  {
+    "id": "d87b9c0dfa",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "Can the same torque and tool wear be safe on one product but cause a failure on another?",
+    "answer": "Yes \u2014 Overstrain Failure thresholds are product-quality-dependent. The same `Tool wear \u00d7 Torque` value that's safe on a Low (L) quality variant (threshold \u2248 11,000 min\u00b7Nm) can exceed the limit on a Medium (M, \u2248 12,000 min\u00b7Nm) or High (H, \u2248 13,000 min\u00b7Nm) variant, and vice versa. Applying one global threshold across all variants produces false positives on L and false negatives on H, so the product `Type` must always be checked alongside the strain calculation."
+  },
+  {
+    "id": "433090e42a",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "What is strain_indicator and why does it matter?",
+    "answer": "`strain_indicator = Tool wear [min] \u00d7 Torque [Nm]` \u2014 it's a derived measure of accumulated mechanical strain that combines how worn the tool is with how much torque is currently being applied. Overstrain Failure occurs when this value exceeds a variant-specific threshold (L \u2248 11,000, M \u2248 12,000, H \u2248 13,000 min\u00b7Nm). Neither tool wear nor torque alone tells you the risk \u2014 a worn tool under moderate torque and a fresh tool under high torque can both trigger OSF."
+  },
+  {
+    "id": "72e90335be",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "Is a brand-new, barely-worn tool safe under high torque?",
+    "answer": "Not automatically. Because `strain_indicator = Tool wear \u00d7 Torque`, a fresh tool (low wear) can still reach the overstrain threshold if torque is high enough \u2014 the two factors trade off against each other. Always compute the product against the variant-specific threshold for the product's `Type` (L/M/H) rather than assuming low wear alone is safe."
+  },
+  {
+    "id": "50acea25e7",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "RNF",
+    "section": "Random Failure",
+    "question": "The machine failed but every sensor reading looked completely normal \u2014 how is that possible?",
+    "answer": "This is most likely a background failure with no sensor signature at all \u2014 in this knowledge base, that's classified as RNF (Random Failure). It occurs independently of torque, temperature, speed, or tool wear, and is modeled as a small constant probability (~0.1%) applied to every process instance. If none of the TWF/HDF/PWF/OSF trigger conditions were met, don't force a sensor-based explanation onto the event \u2014 treat it as irreducible background risk instead."
+  },
+  {
+    "id": "cb2d1a82cd",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "RNF",
+    "section": "Random Failure",
+    "question": "Should I try to build a predictive model for failures that don't correlate with any sensor?",
+    "answer": "No \u2014 by design, this class of failure (RNF) has no correlation with air temperature, process temperature, rotational speed, torque, or tool wear, so a sensor-based model shouldn't be expected to meaningfully outperform the base rate. If a report or model claims a confident sensor-driven explanation for one of these events, treat that explanation with skepticism; it's more likely overfitting to coincidence. Redundancy, spare-part availability, and fast response crews mitigate this risk better than prediction."
+  },
+  {
+    "id": "13359538bd",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "RNF",
+    "section": "Random Failure",
+    "question": "How should incidents with no clear cause be handled differently from the other failure modes?",
+    "answer": "Track them separately in your reporting rather than folding them into TWF/HDF/PWF/OSF root-cause statistics, since attributing an uncaused event to one of those mechanisms will distort your data. Because this failure type is unpredictable by nature, the response protocol should emphasize rapid detection-after-the-fact and containment, not prevention."
+  },
+  {
+    "id": "c0ed104e40",
+    "process_control": "predictive-maintenance",
+    "failure_mode": null,
+    "section": "General Triage and Escalation SOP",
+    "question": "Who should I notify for a high-severity machine incident?",
+    "answer": "Route high-severity incidents (PWF overpower, OSF, or any incident meeting the halt criteria) to the line supervisor immediately. Low- and medium-severity incidents \u2014 such as PWF underpower, HDF, or TWF \u2014 go to the standard maintenance queue instead. Always cross-check a model's predicted failure probability against the actual computed derived feature (power, temp_diff, strain_indicator) before writing a report that asserts a specific root cause."
+  },
+  {
+    "id": "958fe04268",
+    "process_control": "predictive-maintenance",
+    "failure_mode": null,
+    "section": "General Triage and Escalation SOP",
+    "question": "What's the difference between a failure mode's severity rating and whether I need to halt the line?",
+    "answer": "They're related but not the same check. Severity (from the triage table \u2014 e.g. PWF-overpower and OSF are High/Immediate, HDF and PWF-underpower are Medium/Same-shift, TWF is Low\u2013Medium/Next window) tells you how urgently to investigate. Halt criteria is a separate, stricter overlay: you must stop the line immediately if computed power exceeds 9000 W, `tool_wear \u00d7 torque` exceeds the variant threshold by more than 10%, or two or more failure conditions are met at once \u2014 regardless of what the severity table alone would suggest. A High-severity finding doesn't automatically mean a full halt if it doesn't also meet one of those three halt conditions."
+  },
+  {
+    "id": "7f5a1e5a56",
+    "process_control": "predictive-maintenance",
+    "failure_mode": null,
+    "section": "General Triage and Escalation SOP",
+    "question": "Do I always need to stop the production line when a failure condition is detected?",
+    "answer": "No \u2014 only when one of the specific halt criteria is met: computed power over 9000 W, `tool_wear \u00d7 torque` exceeding the variant threshold by more than 10%, or two or more failure conditions firing simultaneously. Otherwise, flag the unit for inspection at the next scheduled maintenance window instead of halting; unnecessary halts carry their own production cost."
+  },
+  {
+    "id": "117ffdb817",
+    "process_control": "predictive-maintenance",
+    "failure_mode": null,
+    "section": "Sensor and Derived Feature Reference",
+    "question": "What does the product Type field (L/M/H) mean?",
+    "answer": "`Type` records the product's quality variant \u2014 Low (L), Medium (M), or High (H). It doesn't appear in the HDF, PWF, or TWF calculations, but it's essential for Overstrain Failure: each variant has its own `Tool wear \u00d7 Torque` threshold (L \u2248 11,000, M \u2248 12,000, H \u2248 13,000 min\u00b7Nm), so the same sensor readings can be safe on one variant and a failure on another."
+  },
+  {
+    "id": "ca8be638d6",
+    "process_control": "predictive-maintenance",
+    "failure_mode": null,
+    "section": "Sensor and Derived Feature Reference",
+    "question": "What units are power and strain_indicator measured in?",
+    "answer": "`power` is measured in watts (W), computed as `Torque [Nm] \u00d7 Rotational speed [rpm] \u00d7 (2\u03c0/60)`. `strain_indicator` doesn't correspond to a standard physical unit \u2014 it's simply `Tool wear [min] \u00d7 Torque [Nm]`, expressed here as min\u00b7Nm, and is only meaningful relative to its variant-specific threshold, not as an absolute physical quantity."
+  },
+  {
+    "id": "8c2f90045b",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "TWF",
+    "section": "Worked Diagnostic Examples",
+    "question": "Walk me through diagnosing this reading: Type M, Air temp 298 K, Process temp 308 K, Rotational speed 1600 rpm, Torque 30 Nm, Tool wear 215 min.",
+    "answer": "**Step 1 \u2014 check each condition:**\n- Tool wear: 215 min \u2192 inside the 200\u2013240 min TWF band. \u2705 possible TWF\n- temp_diff = 308 \u2212 298 = 10 K (not < 8.6 K) and speed 1600 rpm (not < 1380 rpm) \u2192 HDF condition not met\n- power = 30 \u00d7 1600 \u00d7 (2\u03c0/60) \u2248 5027 W \u2192 inside the 3500\u20139000 W band \u2192 no PWF\n- strain_indicator = 215 \u00d7 30 = 6450 min\u00b7Nm, well under the M threshold (12,000) \u2192 no OSF\n\n**Step 2 \u2014 severity:** Only TWF is in-band. Per the severity table, TWF is Low\u2013Medium severity with a next-scheduled-window response.\n\n**Step 3 \u2014 halt check:** None of the three halt criteria are met (power is in-band, no OSF overage, only one condition fired), so no immediate halt is required.\n\n**Conclusion:** Flag for the priority inspection queue and schedule tool replacement soon, but this does not require stopping the line."
+  },
+  {
+    "id": "e581e4ba19",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Worked Diagnostic Examples",
+    "question": "Walk me through diagnosing this reading: Type L, Air temp 295 K, Process temp 300 K, Rotational speed 1200 rpm, Torque 35 Nm, Tool wear 50 min.",
+    "answer": "**Step 1 \u2014 check each condition:**\n- Tool wear: 50 min \u2192 far below the TWF band \u2192 no TWF\n- temp_diff = 300 \u2212 295 = 5 K (< 8.6 K) **and** speed 1200 rpm (< 1380 rpm) \u2192 both HDF conditions hold \u2192 HDF confirmed\n- power = 35 \u00d7 1200 \u00d7 (2\u03c0/60) \u2248 4398 W \u2192 inside the 3500\u20139000 W band \u2192 no PWF\n- strain_indicator = 50 \u00d7 35 = 1750 min\u00b7Nm, far under the L threshold (11,000) \u2192 no OSF\n\n**Step 2 \u2014 severity:** HDF alone is Medium severity, same-shift response.\n\n**Step 3 \u2014 halt check:** Only one condition (HDF) is met, and no individual metric breaches a halt threshold, so an immediate halt isn't required.\n\n**Conclusion:** Diagnose as HDF. Investigate the coolant/airflow system and consider raising rotational speed rather than stopping production outright."
+  },
+  {
+    "id": "f28320728d",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Worked Diagnostic Examples",
+    "question": "Walk me through diagnosing this reading: Type H, Air temp 300 K, Process temp 311 K, Rotational speed 1800 rpm, Torque 55 Nm, Tool wear 30 min.",
+    "answer": "**Step 1 \u2014 check each condition:**\n- Tool wear: 30 min \u2192 far below the TWF band \u2192 no TWF\n- temp_diff = 311 \u2212 300 = 11 K (not < 8.6 K) \u2192 no HDF\n- power = 55 \u00d7 1800 \u00d7 (2\u03c0/60) \u2248 10,367 W \u2192 **above 9000 W** \u2192 PWF (overpowered)\n- strain_indicator = 30 \u00d7 55 = 1650 min\u00b7Nm, far under the H threshold (13,000) \u2192 no OSF\n\n**Step 2 \u2014 severity:** PWF-overpower is High severity, immediate response.\n\n**Step 3 \u2014 halt check:** Computed power (10,367 W) exceeds the 9000 W halt threshold on its own \u2192 **halt required immediately.**\n\n**Conclusion:** Overpower PWF, confirmed by the derived power calculation \u2014 stop the line now, not at the next scheduled window."
+  },
+  {
+    "id": "dda4fe63ab",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Worked Diagnostic Examples",
+    "question": "Walk me through diagnosing this reading: Type L, Air temp 296 K, Process temp 307 K, Rotational speed 1400 rpm, Torque 60 Nm, Tool wear 195 min.",
+    "answer": "**Step 1 \u2014 check each condition:**\n- Tool wear: 195 min \u2192 just below the 200\u2013240 TWF band \u2192 no TWF (close, but not in-band)\n- temp_diff = 307 \u2212 296 = 11 K (not < 8.6 K) and speed 1400 rpm (not < 1380 rpm) \u2192 no HDF\n- power = 60 \u00d7 1400 \u00d7 (2\u03c0/60) \u2248 8796 W \u2192 inside the 3500\u20139000 W band \u2192 no PWF\n- strain_indicator = 195 \u00d7 60 = 11,700 min\u00b7Nm \u2192 **above the L threshold (11,000)** \u2192 OSF confirmed\n\n**Step 2 \u2014 severity:** OSF is High severity, immediate response, regardless of margin.\n\n**Step 3 \u2014 halt check:** 11,700 exceeds 11,000 by about 6.4% \u2014 under the 10% overage that would force an automatic halt, and no other condition co-occurs, so this doesn't meet the halt criteria on its own even though it's high-severity.\n\n**Conclusion:** OSF \u2014 escalate to the line supervisor for immediate inspection, but a full production halt isn't automatically mandated unless the margin worsens past 10% over threshold or another condition appears."
+  },
+  {
+    "id": "9cfa8e5555",
+    "process_control": "predictive-maintenance",
+    "failure_mode": null,
+    "section": "Worked Diagnostic Examples",
+    "question": "Walk me through diagnosing this reading: Type H, Air temp 295 K, Process temp 300 K, Rotational speed 1200 rpm, Torque 70 Nm, Tool wear 195 min.",
+    "answer": "**Step 1 \u2014 check each condition:**\n- Tool wear: 195 min \u2192 below the TWF band \u2192 no TWF\n- temp_diff = 300 \u2212 295 = 5 K (< 8.6 K) **and** speed 1200 rpm (< 1380 rpm) \u2192 HDF confirmed\n- power = 70 \u00d7 1200 \u00d7 (2\u03c0/60) \u2248 8796 W \u2192 inside the 3500\u20139000 W band \u2192 no PWF\n- strain_indicator = 195 \u00d7 70 = 13,650 min\u00b7Nm \u2192 **above the H threshold (13,000)** \u2192 OSF confirmed\n\n**Step 2 \u2014 severity:** Both HDF (Medium) and OSF (High) are firing at once \u2014 take the higher of the two, High/Immediate.\n\n**Step 3 \u2014 halt check:** Neither condition individually crosses its 'exceeds by >10%' or power threshold, but **two or more failure conditions are met simultaneously (HDF and OSF)** \u2014 that alone satisfies the halt criteria.\n\n**Conclusion:** Multi-mode failure (HDF + OSF) \u2014 halt the line immediately per the simultaneous-conditions rule, even though neither condition alone would have forced a halt."
+  },
+  {
+    "id": "59e3729860",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "TWF",
+    "section": "Worked Diagnostic Examples",
+    "question": "Walk me through this reading: Type M, Air temp 298 K, Process temp 308 K, Rotational speed 1600 rpm, Torque 30 Nm, Tool wear 225 min, and the unit is still running fine.",
+    "answer": "**Step 1 \u2014 check each condition:**\n- Tool wear: 225 min \u2192 inside the 200\u2013240 min TWF band\n- temp_diff = 10 K (not < 8.6 K) and speed 1600 rpm (not < 1380 rpm) \u2192 no HDF\n- power = 30 \u00d7 1600 \u00d7 (2\u03c0/60) \u2248 5027 W \u2192 inside the 3500\u20139000 W band \u2192 no PWF\n- strain_indicator = 225 \u00d7 30 = 6750 min\u00b7Nm, well under the M threshold (12,000) \u2192 no OSF\n\n**Step 2 \u2014 interpretation:** Tool wear sitting in the 200\u2013240 minute band is a probabilistic risk marker, not a deterministic one \u2014 the TWF documentation explicitly notes that units in this band commonly run without failing. Since the unit is still operating normally and no other condition is met, this should **not** be logged as a confirmed failure.\n\n**Conclusion:** Flag for the priority inspection queue and schedule tool replacement proactively, but do not report this as a TWF incident \u2014 only as an elevated-risk unit to watch."
+  },
+  {
+    "id": "ae1dcf3957",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "What are the symptoms of Heat Dissipation Failure?",
+    "answer": "- Abnormally high machine or process temperature.\n- Cooling performance is weaker than expected.\n- Temperature rises during sustained or heavy operation.\n- The machine may derate, trigger a temperature alarm, or shut down."
+  },
+  {
+    "id": "b2a1fbed0a",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "What is the root cause of Heat Dissipation Failure?",
+    "answer": "- Blocked vents, dirty filters, or restricted airflow.\n- Failed or degraded cooling fan, pump, heat exchanger, or coolant circuit.\n- Low, contaminated, or leaking coolant or lubricant.\n- Excessive process load, friction, or prolonged low-airflow operation.\n- Faulty or poorly calibrated temperature sensor."
+  },
+  {
+    "id": "a4415efbd0",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "What is the sensor signature of Heat Dissipation Failure?",
+    "answer": "- Process or component temperature trends upward beyond its normal operating baseline.\n- The temperature difference between the machine/process and its cooling medium becomes abnormal.\n- Temperature remains elevated after load is reduced.\n- Cooling-system status, fan speed, flow, or pressure may be low or unstable."
+  },
+  {
+    "id": "c98d530bd3",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "What is the recommended action for Heat Dissipation Failure?",
+    "answer": "- Verify the temperature reading with a trusted instrument when safe to do so.\n- Inspect and clean filters, vents, fans, cooling fins, and heat exchangers.\n- Check coolant level, flow, pressure, leakage, and condition.\n- Reduce machine load and allow controlled cooling according to the operating procedure.\n- Repair or replace defective cooling components and recalibrate faulty sensors."
+  },
+  {
+    "id": "1fa2bd4467",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "HDF",
+    "section": "Heat Dissipation Failure",
+    "question": "What are the escalation and safety considerations for Heat Dissipation Failure?",
+    "answer": "- Stop the machine if temperature exceeds its approved limit or smoke, odor, leakage, or rapid heating occurs.\n- Do not open a pressurized or hot cooling system until it is isolated and cooled.\n- Apply lockout/tagout before accessing fans, pumps, or internal components.\n- Escalate recurring overheating to maintenance and process engineering."
+  },
+  {
+    "id": "da179b1e6d",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "What are the symptoms of Overstrain Failure?",
+    "answer": "- Excessive mechanical load, torque, vibration, or deformation.\n- Reduced speed, poor process quality, or difficulty completing the operation.\n- Accelerated wear, cracking, bending, or breakage of tools or components.\n- Overload or torque-limit alarms may occur."
+  },
+  {
+    "id": "6fda618d5b",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "What is the root cause of Overstrain Failure?",
+    "answer": "- Operating load exceeds the tool or component's rated capacity.\n- A worn or damaged tool requires greater force to perform the process.\n- Misalignment, jamming, improper feed, or unsuitable work material.\n- Incorrect operating parameters or tooling selection.\n- Weak, fatigued, or improperly installed mechanical components."
+  },
+  {
+    "id": "b2d23ef2a6",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "What is the sensor signature of Overstrain Failure?",
+    "answer": "- Torque, force, strain, or motor current rises above the normal process baseline.\n- High load persists or increases while speed or output decreases.\n- Vibration or acoustic-emission levels increase under load.\n- Tool-wear indicators and load measurements deteriorate together."
+  },
+  {
+    "id": "e9380cebc6",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "What is the recommended action for Overstrain Failure?",
+    "answer": "- Stop or reduce the load according to the approved operating procedure.\n- Inspect the tool and loaded components for wear, cracks, deformation, or looseness.\n- Check alignment, lubrication, material feed, clamping, and process settings.\n- Replace damaged or end-of-life tooling and components.\n- Verify that the equipment and tool ratings match the intended operation."
+  },
+  {
+    "id": "fc4efb8a87",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "OSF",
+    "section": "Overstrain Failure",
+    "question": "What are the escalation and safety considerations for Overstrain Failure?",
+    "answer": "- Stop immediately if cracking, severe vibration, jamming, deformation, or imminent breakage is suspected.\n- Keep personnel clear of stored-energy and potential fragment-ejection zones.\n- Isolate mechanical, hydraulic, pneumatic, and electrical energy before inspection.\n- Escalate repeated overstrain events to maintenance, reliability, and process engineering."
+  },
+  {
+    "id": "3bdafab7ad",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "What are the symptoms of Power Failure?",
+    "answer": "- Unexpected loss of power, machine stoppage, or failure to start.\n- Motor speed or torque is unstable or insufficient for the commanded load.\n- Electrical protection, overload, undervoltage, or overcurrent alarms may activate.\n- The machine may draw unusually high or low power."
+  },
+  {
+    "id": "fa3303819e",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "What is the root cause of Power Failure?",
+    "answer": "- Supply interruption, voltage imbalance, loose connection, or damaged cable.\n- Motor, drive, inverter, contactor, fuse, breaker, or power-supply fault.\n- Mechanical overload, binding, misalignment, or excessive friction.\n- Incorrect control command or drive configuration.\n- Faulty voltage, current, torque, or speed sensor."
+  },
+  {
+    "id": "ed6de6dd8e",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "What is the sensor signature of Power Failure?",
+    "answer": "- Voltage, current, power, torque, or rotational speed deviates from the normal load-dependent pattern.\n- Commanded speed differs persistently from measured speed.\n- Current or power rises while speed falls, suggesting overload or mechanical resistance.\n- Sudden voltage loss or fluctuation coincides with the failure event."
+  },
+  {
+    "id": "54e5187ac9",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "What is the recommended action for Power Failure?",
+    "answer": "- Check active alarms and confirm the electrical supply is within the approved range.\n- Inspect cables, connectors, fuses, breakers, contactors, motor, and drive.\n- Compare commanded and measured speed, torque, current, and power.\n- Inspect the driven equipment for binding, overload, or misalignment.\n- Correct the electrical or mechanical fault before resetting protection devices."
+  },
+  {
+    "id": "78b97cfea6",
+    "process_control": "predictive-maintenance",
+    "failure_mode": "PWF",
+    "section": "Power Failure",
+    "question": "What are the escalation and safety considerations for Power Failure?",
+    "answer": "- Isolate the equipment immediately if there is arcing, smoke, burning odor, exposed wiring, or repeated protection trips.\n- Only qualified personnel should test energized electrical equipment.\n- Apply lockout/tagout and verify absence of voltage before internal inspection.\n- Escalate repeated or unexplained power events to electrical and maintenance specialists."
+  }
+]
