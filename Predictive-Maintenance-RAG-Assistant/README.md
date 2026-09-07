@@ -54,7 +54,12 @@ conversation log and monitoring dashboard (see
 
 ```
 data/
-  knowledge_base.json      71 FAQ-style entries across the 5 failure modes
+  knowledge_base.json      The initial knowledge base files (kb_001_twf.md, kb_002_hdf.md, kb_003_pwf.md, kb_004_osf.md, kb_005_rnf.md, kb_006_general_sop.md, and kb_007_sensor_reference.md)
+                           were generated with the assistance of Claude AI, based on information from the AI4I 2020 Predictive Maintenance Dataset
+                           and relevant research papers cited by or related to the dataset.
+                           The build_knowledge_base.py script is then used to process these individual knowledge base files and generate the overall knowledge_base JSON file in an FAQ-style format.
+                           The UCI page confirms that the AI4I 2020 dataset includes the five failure modes (TWF, HDF, PWF, OSF, and RNF) and provides the associated introductory paper.
+                           71 FAQ-style entries across the 5 failure modes
   ground_truth.csv         355 LLM-generated evaluation questions (5 per entry)
   rag_answer.csv           generated answers, prompt/model Approach A
   rag_answer2.csv          generated answers, prompt/model Approach B
