@@ -212,6 +212,3 @@ and the user's own 👍/👎 feedback (`save_feedback`) — so the dashboard
 reflects real usage as soon as the app is used, with no extra setup beyond
 the Postgres steps above.
 
-## License
-
-MIT — see [LICENSE](LICENSE).
