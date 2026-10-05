@@ -212,3 +212,10 @@ and the user's own 👍/👎 feedback (`save_feedback`) — so the dashboard
 reflects real usage as soon as the app is used, with no extra setup beyond
 the Postgres steps above.
 
+## License
+
+© 2026 Octavia May. All rights reserved.
+
+This code is shared publicly for portfolio review only. You may view it,
+but you may not copy, reuse, modify, or redistribute any part of it
+without my written permission. See [LICENSE](LICENSE) for details.
