@@ -3,6 +3,25 @@ from pathlib import Path
 
 import streamlit as st
 
+# ==============================
+# Google Analytics 4
+# ==============================
+GA_MEASUREMENT_ID = "G-9E0JESKVP3"
+
+st.html(
+    f"""
+    <script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){{dataLayer.push(arguments);}}
+
+        gtag('js', new Date());
+        gtag('config', '{GA_MEASUREMENT_ID}');
+    </script>
+    """,
+    unsafe_allow_javascript=True,
+)
+
 # Add project root to Python path
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT_DIR))
