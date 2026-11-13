@@ -4,6 +4,7 @@ from datetime import datetime
 
 from src.rag_helper import RAGBase
 from src.search import vector_search
+from src.pricing import calculate_cost
 
 @dataclass
 class LLMCallRecord:
@@ -20,21 +21,14 @@ class LLMCallRecord:
     timestamp: datetime = field(default_factory=datetime.now)
 
 
-def calculate_cost(model, usage):
-    cost = 0
-    if "gpt-5.4-mini" in model:
-        cost = (usage.input_tokens * 0.15 + usage.output_tokens * 0.60) / 1_000_000
-    return cost
-
-
 class RAGWithMetrics(RAGBase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.last_call: LLMCallRecord = None
 
-    def search(self, query):
-            return vector_search(query)
+    def search(self, query, num_results = 5):
+        return self.index.search(query, top_k = num_results)
 
     def llm(self, prompt):
         start_time = time.time()

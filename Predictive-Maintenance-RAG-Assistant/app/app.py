@@ -1,33 +1,22 @@
 import sys
 from pathlib import Path
-
+from dotenv import load_dotenv
 import streamlit as st
+import logging
 
-# ==============================
-# Google Analytics 4
-# ==============================
-GA_MEASUREMENT_ID = "G-9E0JESKVP3"
-
-st.html(
-    f"""
-    <script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){{dataLayer.push(arguments);}}
-
-        gtag('js', new Date());
-        gtag('config', '{GA_MEASUREMENT_ID}');
-    </script>
-    """,
-    unsafe_allow_javascript=True,
+logging.basicConfig(
+    level= logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
 )
 
 # Add project root to Python path
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT_DIR))
 
+load_dotenv(ROOT_DIR / ".env")
+
 from src.assistant import create_assistant
-from src.database import save_conversation, save_feedback
+from src.database import create_conversation_db,save_conversation, save_feedback
 from src.judge import evaluate_relevance
 
 st.set_page_config(page_title="Predictive Maintenance RAG Assistant", page_icon="🛠️", layout="wide")
@@ -40,12 +29,18 @@ EXAMPLE_QUESTIONS = [
     "What fields are needed to diagnose Overstrain Failure?",
 ]
 
+@st.cache_resource(show_spinner="Preparing database...")
+def init_db():
+    create_conversation_db() # To have safe-run on every start
+    return True
+
 
 @st.cache_resource(show_spinner="Loading assistant...")
 def get_assistant():
     return create_assistant()
 
 
+init_db()
 llm_assistant = get_assistant()
 
 # ---------------------------------------------------------------------------
@@ -63,11 +58,14 @@ def handle_question(question: str):
     with st.spinner("Thinking..."):
         answer = llm_assistant.rag(question)
         answer_record = llm_assistant.last_call
-        relevance, explanation = evaluate_relevance(question, answer)
+        judge = evaluate_relevance(question, answer)
 
         # log the conversation + the judge's relevance verdict
         conversation_id = save_conversation(answer_record, question, "General")
-        save_feedback(conversation_id, "judge", relevance=relevance, explanation=explanation)
+        save_feedback(conversation_id, "judge", 
+                      relevance= judge["relevance"], 
+                      explanation = judge["explanation"],
+                      judge= judge)
 
     st.session_state.messages.append({"role": "user", "content": question})
     st.session_state.messages.append({
@@ -78,8 +76,8 @@ def handle_question(question: str):
         "prompt_tokens": answer_record.prompt_tokens,
         "completion_tokens": answer_record.completion_tokens,
         "cost": answer_record.cost,
-        "relevance": relevance,
-        "explanation": explanation,
+        "relevance": judge["relevance"],
+        "explanation": judge["explanation"],
         "feedback": None,
     })
 

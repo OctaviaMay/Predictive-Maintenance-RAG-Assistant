@@ -1,49 +1,48 @@
 
+from functools import lru_cache
 
 from src.ingest import load_machine_data
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+# Fields used for retrieval
+RETRIEVAL_FIELDS = ["process_control","failure_mode","section","question","answer"]
 
-def vector_search(query, top_k=5):
-    # load machine data
-    documents = load_machine_data()
+class TfidfRetriever:
+    # TF-IDF + cosine-similarity retriever
 
-    SECTION_FILTER = None
+    def __init__(self, documents):
+        self.documents = documents
+        
+        document_texts = [
+            " ".join(doc.get(f) or "" for f in RETRIEVAL_FIELDS)
+            for doc in documents
+        ]
+        self.vectorizer = TfidfVectorizer(stop_words="english")
+        self.document_vectors = self.vectorizer.fit_transform(document_texts)
 
-    documents_eval = [
-        doc for doc in documents
-        if SECTION_FILTER is None or doc["section"] == SECTION_FILTER
-    ]
-    # Fields used for retrieval
-    document_texts = [
-    " ".join([
-        doc.get("process_control") or "",
-        doc.get("failure_mode") or "",
-        doc.get("section") or "",
-        doc.get("question") or "",
-        doc.get("answer") or ""
-    ])
-    for doc in documents_eval
-    ]
-    vectorizer = TfidfVectorizer(stop_words="english")
-    document_vectors = vectorizer.fit_transform(document_texts)
+    def search(self,query, top_k=5):
+        query_vector = self.vectorizer.transform([query])
+        scores = cosine_similarity(query_vector,self.document_vectors)[0]
+        top_indexes = scores.argsort()[::-1][:top_k]
 
-    query_vector = vectorizer.transform([query])
+        results = []
+        
+        for index in top_indexes:
+            results.append({
+                **self.documents[index],
+                "score": round(float(scores[index]), 4)
+            })
 
-    scores = cosine_similarity(
-        query_vector,
-        document_vectors
-    )[0]
+        return results
 
-    top_indexes = scores.argsort()[::-1][:top_k]
 
-    results = []
+@lru_cache(maxsize=1)
+def get_retriever():
+    return TfidfRetriever(load_machine_data())
 
-    for index in top_indexes:
-        results.append({
-            **documents_eval[index],
-            "score": round(float(scores[index]), 4)
-        })
 
-    return results
+def vector_search(query,top_k = 5):
+    return get_retriever().search(query,top_k=top_k)
+
+

@@ -4,10 +4,12 @@ from dataclasses import dataclass, field
 from tqdm.auto import tqdm
 from datetime import datetime
 from src.metrics import LLMCallRecord
-
+import logging
+logger = logging.getLogger(__name__)
 
 DB_TIMEZONE = datetime.now().astimezone().tzinfo
-print(f"Using timezone: {DB_TIMEZONE}")
+# logger.info(f"Using timezone: {DB_TIMEZONE}")
+
 
 
 @dataclass
@@ -47,21 +49,17 @@ def get_db_connection():
 def create_conversation_db(drop=False):
     """Create the conversations/feedback tables if they don't already exist.
 
-    drop=True forces a full reset (used for manual re-initialization); the
-    default is idempotent so it's safe to call on every app startup.
+    Raises on failure so a broken database stops startup instead of
+    failing silently on the first user question.
     """
-    print("Creating PostgreSQL database connection...")
-    conn = get_db_connection()
-
-    try:
-        print("✅ Connected successfully!")
-
+  
+    logger.info("Initialising PostgreSQL schema...")
+    with get_db_connection() as conn:
         with conn.cursor() as cur:
             if drop:
                 cur.execute("DROP TABLE IF EXISTS feedback CASCADE")
                 cur.execute("DROP TABLE IF EXISTS conversations CASCADE")
-
-            # Create tables
+            
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS conversations (
                     id SERIAL PRIMARY KEY,
@@ -79,7 +77,7 @@ def create_conversation_db(drop=False):
                     timestamp TIMESTAMP WITH TIME ZONE NOT NULL
                 )
             """)
-
+            
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS feedback (
                     id SERIAL PRIMARY KEY,
@@ -91,22 +89,25 @@ def create_conversation_db(drop=False):
                     timestamp TIMESTAMP WITH TIME ZONE NOT NULL
                 )
             """)
-        conn.commit()
-        print("✅ conversations/feedback tables are ready.")
+            
+            cur.execute("""
+                ALTER TABLE feedback
+                    ADD COLUMN IF NOT EXISTS model TEXT,
+                    ADD COLUMN IF NOT EXISTS prompt_tokens INTEGER,
+                    ADD COLUMN IF NOT EXISTS completion_tokens INTEGER,
+                    ADD COLUMN IF NOT EXISTS total_tokens INTEGER,
+                    ADD COLUMN IF NOT EXISTS response_time FLOAT,
+                    ADD COLUMN IF NOT EXISTS cost FLOAT
+            """)
 
-        return "success"
+    logger.info("Schema ready.")
 
-    except Exception as e:
-        print(f"{type(e).__name__}: {e}")
-        return "fail"
-    finally:
-        conn.close()
+    
 
 def save_conversation(answer_record, question, section):
     timestamp = datetime.now(DB_TIMEZONE)
 
-    conn = get_db_connection()
-    try:
+    with get_db_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
@@ -135,38 +136,38 @@ def save_conversation(answer_record, question, section):
                 ),
             )
             conversation_id = cur.fetchone()[0]
-        conn.commit()
-    finally:
-        conn.close()
+    
     return conversation_id
 
 
 def save_feedback(conversation_id, source, relevance=None,
-                  explanation=None, score=None):
+                  explanation=None, score=None, judge= None):
+
+    judge = judge or {}
     timestamp = datetime.now(DB_TIMEZONE)
 
-    conn = get_db_connection()
-    try:
+    with get_db_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
                 INSERT INTO feedback (
-                    conversation_id, source, relevance,
-                    explanation, score, timestamp
+                    conversation_id, source, relevance,explanation, score, 
+                    model, prompt_tokens, completion_tokens, total_tokens,
+                    response_time, cost,timestamp
                 ) VALUES (
-                    %s, %s, %s, %s, %s, %s
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
                 )
                 """,
-                (conversation_id, source, relevance,
-                 explanation, score, timestamp),
+                (conversation_id, source, relevance, explanation, score,
+                 judge.get("model"), judge.get("prompt_tokens"), judge.get("completion_tokens"),judge.get("total_tokens"),
+                judge.get("response_time"), judge.get("cost"),
+                 timestamp),
             )
-        conn.commit()
-    finally:
-        conn.close()
+   
 
 def get_conversations(limit=10):
-    conn = get_db_connection()
-    try:
+    
+    with get_db_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
@@ -181,26 +182,22 @@ def get_conversations(limit=10):
                 (limit,),
             )
             rows = cur.fetchall()
-    finally:
-        conn.close()
 
     return [row_to_record(row) for row in rows]
 
+
 def get_statistic():
-    conn = get_db_connection()
-    try:
+    with get_db_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT
                     COUNT(*),
-                    AVG(response_time),
-                    SUM(cost),
-                    AVG(total_tokens)
-                FROM conversations
+                    AVG(c.response_time),
+                    SUM(c.cost) + COALESCE((SELECT SUM(cost) FROM feedback WHERE source = 'judge'), 0),
+                    AVG(c.total_tokens)
+                FROM conversations c
             """)
             row = cur.fetchone()
-    finally:
-        conn.close()
 
     return Stats(
         total=row[0] or 0,

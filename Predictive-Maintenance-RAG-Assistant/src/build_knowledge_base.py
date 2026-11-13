@@ -4,6 +4,9 @@ import hashlib
 import json
 import re
 import frontmatter
+import logging
+
+logger = logging.getLogger(__name__)
 
 SOURCE_GLOB = "data/knowledge_base/*.md"
 OUTPUT_PATH = "data/knowledge_base.json"
@@ -66,8 +69,8 @@ def build():
     with open(OUTPUT_PATH, "w") as f:
         json.dump(records, f, indent=2)
 
-    print(f"Parsed {len(glob.glob(SOURCE_GLOB))} source docs -> {len(records)} Q&A records")
-    print(f"Wrote {OUTPUT_PATH}")
+    logger.info(f"Parsed {len(glob.glob(SOURCE_GLOB))} source docs -> {len(records)} Q&A records")
+    logger.info(f"Wrote {OUTPUT_PATH}")
 
 
 if __name__ == "__main__":

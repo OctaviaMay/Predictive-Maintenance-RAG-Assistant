@@ -1,25 +1,24 @@
 
-# from sentence_transformers import SentenceTransformer
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# from sklearn.metrics.pairwise import cosine_similarity
+
 from src.search import vector_search
+from src.prompt import ANSWER_MODEL, INSTRUCTIONS, PROMPT_TEMPLATE
 
 
-INSTRUCTIONS = '''
-You are a predictive maintenance assistant for industrial equipment.
-Answer the question using ONLY the context below. If the context doesn't
-contain enough information, say so rather than guessing.
-'''
+# INSTRUCTIONS = '''
+# You are a predictive maintenance assistant for industrial equipment.
+# Answer the question using ONLY the context below. If the context doesn't
+# contain enough information, say so rather than guessing.
+# '''
 
-PROMPT_TEMPLATE = '''
-QUESTION: {question}
+# PROMPT_TEMPLATE = '''
+# QUESTION: {question}
 
-CONTEXT:
-{context}
+# CONTEXT:
+# {context}
 
-Give a clear, structured answer: what's happening, why (cite the relevant
-mechanism from the context), and recommended action.
-'''.strip()
+# Give a clear, structured answer: what's happening, why (cite the relevant
+# mechanism from the context), and recommended action.
+# '''.strip()
 
 # EMBEDDER_MODEL = SentenceTransformer('all-MiniLM-L6-v2')
 # AI_MODEL = 'gpt-5.4-mini'

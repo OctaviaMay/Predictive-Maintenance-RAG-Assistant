@@ -7,6 +7,7 @@ from tqdm.auto import tqdm
 
 from src.rag_helper import RAGBase
 from src.search import vector_search
+from src.pricing import calculate_cost
 
 def get_llm_response(client, instructions,user_prompt,output_type, model):
     messages =[
@@ -32,26 +33,18 @@ def get_llm_response_retry(client, instructions,user_prompt,output_type, model, 
             time.sleep(2 ** attempt)
 
 
-def calculate_price(usage):
-    input_price_per_million = 0.75
-    output_price_per_million = 4.50
-
-    input_cost = (usage.input_tokens / 1_000_000) * input_price_per_million
-    output_cost = (usage.output_tokens / 1_000_000) * output_price_per_million
-    total_cost = input_cost + output_cost
-
+def calculate_price(model,usage):
+    result = calculate_cost(model,usage)
     return {
-        "input_cost": input_cost,
-        "output_cost": output_cost,
-        "total_cost": total_cost,
+        "cost": result.cost
     }
 
-def calculate_total_price(usages):
+def calculate_total_price(model,usages):
     total_cost = 0.0
 
     for u in usages:
-        cost = calculate_price(u)
-        total_cost = total_cost + cost['total_cost']
+        cost = calculate_price(model,u)
+        total_cost = total_cost + cost
 
     return total_cost
     

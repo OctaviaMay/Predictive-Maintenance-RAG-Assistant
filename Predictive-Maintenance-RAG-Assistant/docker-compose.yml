@@ -10,8 +10,6 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-    networks:
-      - monitoring
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U user -d pm_assistant"]
@@ -38,13 +36,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    networks:
-      - monitoring
     restart: unless-stopped
-
-networks:
-  monitoring:
-    name: monitoring
 
 volumes:
   pgdata:

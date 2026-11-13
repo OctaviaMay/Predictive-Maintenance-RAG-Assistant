@@ -1,0 +1,10 @@
+.env
+.git
+__pycache__/
+*.pyc
+notebook/
+docs/
+data/rag_*.csv
+data/ground_truth.csv
+.ipynb_checkpoints/
+tests/
