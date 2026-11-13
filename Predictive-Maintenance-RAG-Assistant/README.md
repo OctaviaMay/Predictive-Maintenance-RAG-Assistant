@@ -1,5 +1,7 @@
 # Predictive Maintenance RAG Assistant
 
+![CI](https://github.com/OctaviaMay/Predictive-Maintenance-RAG-Assistant/actions/workflows/ci.yml/badge.svg)
+
 DataTalks LLM Zoomcamp 2026 Capstone Project
 
 A retrieval-augmented Q&A assistant for industrial predictive maintenance. Machine
@@ -31,7 +33,8 @@ User question
       ▼
 Retrieval  (src/search.py)       TF-IDF vectorization + cosine similarity
       │                          over question/answer/section/failure_mode/
-      │                          process_control text, top-5 matches
+      │                          process_control text, fitted once at startup
+                                 and cached; top-5 matches
       ▼
 Prompt assembly  (src/rag_helper.py)   Retrieved entries formatted into context,
       │                                 injected into a fixed prompt template
@@ -40,6 +43,9 @@ Generation  (OpenAI Responses API, gpt-5.4-mini)
       │
       ▼
 Answer + usage metrics (src/metrics.py)   cost, tokens, response time
+      │
+      ▼
+LLM-as-judge relevance check (src/judge.py) verdict + its own tokens/cost
       │
       ▼
 Streamlit chat UI  (app/app.py)
@@ -73,14 +79,17 @@ notebook/
   rag_evaluation.ipynb            LLM-as-judge scoring + approach comparison
 
 src/
-  ingest.py         loads the knowledge base, builds a lexical search index
+  ingest.py         loads the knowledge base, build_index() is the lexical
+                    baseline used in retrieval_evaluation.ipynb
+  prompt.py         single source of prompts and model names (answer + judge)
+  pricing.py        per-model token prices and cost calculation
   search.py         TF-IDF + cosine-similarity retrieval (used in production)
-  rag_helper.py      RAGBase: prompt building + OpenAI call
-  metrics.py         RAGWithMetrics: production assistant (usage/cost tracking)
-  evaluation.py       RAGWithUsage + shared LLM-call / cost-tracking helpers
-  judge.py            LLM-as-judge relevance check used live in the chat app
-  assistant.py         wires up the winning prompt/model config for the app
-  database.py           Postgres schema + conversation/feedback logging
+  rag_helper.py     RAGBase: prompt building + OpenAI call
+  metrics.py        RAGWithMetrics: production assistant (usage/cost tracking)
+  evaluation.py     RAGWithUsage + shared LLM-call / cost-tracking helpers
+  judge.py          LLM-as-judge relevance check used live in the chat app
+  assistant.py      wires up the winning prompt/model config for the app
+  database.py       Postgres schema + conversation/feedback logging
 
 app/
   app.py                  Streamlit chat interface (main entry point)
@@ -92,9 +101,14 @@ app/
 docs/
   screenshots/          chat.jpg, dashboard.jpg (used in this README)
 
-Dockerfile            builds the app image (used by docker-compose.yml)
-docker-compose.yml     app + Postgres, both started with `docker compose up`
-requirements.txt
+tests/                 pytest unit tests (mocked OpenAI client, no API key needed)
+pytest.ini
+.github/workflows/ci.yml   (repo root) runs tests + Docker build on every push
+Dockerfile                 builds the app image (Python 3.14)
+.dockerignore              keeps .env, notebooks and eval data out of the image
+docker-compose.yml         app + Postgres, both started with `docker compose up`
+requirements.txt           app dependencies (pinned)
+requirements-dev.txt       + Jupyter and pytest for notebooks and tests
 ```
 
 ## Evaluation
@@ -127,6 +141,20 @@ answer) in `notebook/rag_evaluation.ipynb`:
 Approach A scored higher and is the configuration used in production
 (`src/assistant.py`, `src/rag_helper.py`).
 
+
+#### Limitations
+
+- **Two variables changed at once.** Approach A and B differ in both prompt and
+  model, so the 3.1-point gap can't be attributed to either one alone.
+- **Small gap.** 82.8% vs 79.7% on 355 questions is about 11 answers and may be
+  within run-to-run variation of the judge.
+- **Self-evaluation bias.** The judge (gpt-5.4-mini) is the same model that
+  generated Approach A's answers.
+- **Retrieval is lexical.** TF-IDF matches on shared terms; it outperformed
+  boosted keyword search here, but paraphrased questions with no shared terms
+  may retrieve poorly. Comparing against embedding-based and hybrid retrieval
+  is a planned next step.
+  
 ## Setup
 
 Requires an OpenAI API key. Create a `.env` file in the project root first,
@@ -158,30 +186,40 @@ rather than `localhost` — that override is set directly in
 `docker-compose.yml`, so your local `.env`'s `POSTGRES_HOST=localhost` value
 (used for Option B below) doesn't need to change.
 
-### Option B: Local Python
+### Option B: Local Python (3.14)
 
-Needed if you also want to run the evaluation notebooks (Jupyter isn't
-containerized).
+Needed to run the evaluation notebooks or the test suite.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate        # .venv\Scripts\activate on Windows
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
-Start just the database with Docker (or point `.env` at your own Postgres
-instance), then initialize the schema once and run the app:
+Create a `.env` file in the project folder containing `OPENAI_API_KEY=sk-...`,
+then start the database and the app:
 
 ```bash
 docker compose up -d postgres
-python -c "from src.database import create_conversation_db; create_conversation_db()"
 streamlit run app/app.py
 ```
 
-Either way, the monitoring dashboard is a second page inside the same app
-(`app/pages/dashboard.py`) — Streamlit's built-in multipage navigation picks
-up anything in `app/pages/` automatically, so a "Dashboard" link appears in
-the sidebar next to the chat page. There's no separate command to run it.
+The app creates and migrates its database schema on startup, so no separate
+initialisation step is needed.
+
+## Testing & CI
+
+Unit tests cover retrieval ranking, prompt construction, cost calculation,
+LLM call logging, model configuration and the relevance judge. LLM calls use a
+fake OpenAI client, so tests are fast, free and need no API key.
+
+```bash
+pip install -r requirements-dev.txt
+pytest -v
+```
+
+GitHub Actions (`.github/workflows/ci.yml`) runs the test suite and then
+builds the Docker image on every push and pull request.
 
 ## Reproducing the evaluation
 
@@ -211,7 +249,15 @@ Every question asked in `app/app.py` is logged to the `conversations` table
 and the user's own 👍/👎 feedback (`save_feedback`) — so the dashboard
 reflects real usage as soon as the app is used, with no extra setup beyond
 the Postgres steps above.
+The judge's own token usage and cost are logged alongside its verdict, so the dashboard reports the true cost per question (answer + evaluation), not just the answer call.
 
+## Version history
+
+- **v1.0-zoomcamp-submission**: capstone as submitted for peer review.
+- **v1.1-hardened**: production hardening: cached retriever, centralised
+  prompts and pricing, judge cost tracking, structured logging, fail-fast
+  database initialisation, unit tests and CI, slimmer Docker image.
+  
 ## License
 
 © 2026 Octavia May. All rights reserved.
