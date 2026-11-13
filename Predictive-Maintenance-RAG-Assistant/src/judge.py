@@ -1,5 +1,4 @@
 import json
-from dotenv import load_dotenv
 from pydantic import BaseModel
 from typing import Literal
 from openai import OpenAI

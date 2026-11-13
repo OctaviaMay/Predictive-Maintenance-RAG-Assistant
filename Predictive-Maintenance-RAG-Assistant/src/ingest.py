@@ -1,5 +1,4 @@
 from pathlib import Path
-from dotenv import load_dotenv
 from minsearch import Index
 
 import json
