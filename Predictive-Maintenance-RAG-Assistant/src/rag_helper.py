@@ -3,26 +3,6 @@
 from src.search import vector_search
 from src.prompt import ANSWER_MODEL, INSTRUCTIONS, PROMPT_TEMPLATE
 
-
-# INSTRUCTIONS = '''
-# You are a predictive maintenance assistant for industrial equipment.
-# Answer the question using ONLY the context below. If the context doesn't
-# contain enough information, say so rather than guessing.
-# '''
-
-# PROMPT_TEMPLATE = '''
-# QUESTION: {question}
-
-# CONTEXT:
-# {context}
-
-# Give a clear, structured answer: what's happening, why (cite the relevant
-# mechanism from the context), and recommended action.
-# '''.strip()
-
-# EMBEDDER_MODEL = SentenceTransformer('all-MiniLM-L6-v2')
-# AI_MODEL = 'gpt-5.4-mini'
-
 class RAGBase:
 
     def __init__(
@@ -32,13 +12,13 @@ class RAGBase:
         instructions,
         prompt_template,
         model
-        
     ):
         self.index = index
         self.llm_client = llm_client
         self.instructions = instructions
         self.prompt_template = prompt_template
         self.model = model
+        self.last_context = None # context used for the most recent answer
 
    
     def search(self, query, num_results=5):
@@ -84,6 +64,7 @@ class RAGBase:
 
     def rag(self,query):
         search_results = self.search(query)
-        prompt = self.build_prompt(query, search_results)
+        self.last_context = self.build_context(search_results)
+        prompt = self.prompt_template.format(question=query,context=self.last_context)
         answer = self.llm(prompt)
         return answer

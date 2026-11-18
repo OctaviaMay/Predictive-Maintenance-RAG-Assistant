@@ -17,7 +17,7 @@ load_dotenv(ROOT_DIR / ".env")
 
 from src.assistant import create_assistant
 from src.database import create_conversation_db,save_conversation, save_feedback
-from src.judge import evaluate_relevance
+from src.judge import evaluate_answer
 
 st.set_page_config(page_title="Predictive Maintenance RAG Assistant", page_icon="🛠️", layout="wide")
 
@@ -58,9 +58,10 @@ def handle_question(question: str):
     with st.spinner("Thinking..."):
         answer = llm_assistant.rag(question)
         answer_record = llm_assistant.last_call
-        judge = evaluate_relevance(question, answer)
+        context = llm_assistant.last_context
+        judge = evaluate_answer(question, answer, context)
 
-        # log the conversation + the judge's relevance verdict
+        # log the conversation + the judge verdict
         conversation_id = save_conversation(answer_record, question, "General")
         save_feedback(conversation_id, "judge", 
                       relevance= judge["relevance"], 
@@ -78,6 +79,8 @@ def handle_question(question: str):
         "cost": answer_record.cost,
         "relevance": judge["relevance"],
         "explanation": judge["explanation"],
+        "groundedness" : judge["groundedness"],
+        "unsupported_claims" : judge["unsupported_claims"],
         "feedback": None,
     })
 
@@ -126,6 +129,14 @@ for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
+        if msg["role"] == "assistant" and msg.get("groundedness") in ("NON_GROUNDED", "PARTIALLY_GROUNDED"):
+            claims = msg.get("unsupported_claims") or []
+            st.warning(
+                "Some statements in this answer are not supported by the "
+                "maintenance knowledge base. Verify before acting:\n\n"
+                + "\n".join(f"- {c}" for c in claims)
+            )
+
         if msg["role"] == "assistant":
             with st.expander("Answer details"):
                 st.markdown(f"**Response time:** {msg['response_time']:.2f}s")
@@ -133,6 +144,7 @@ for msg in st.session_state.messages:
                 st.markdown(f"**Completion tokens:** {msg['completion_tokens']}")
                 st.markdown(f"**Cost:** ${msg['cost']:.4f}")
                 st.markdown(f"**LLM judge relevance:** {msg['relevance']}")
+                st.markdown(f"**Groundedness:** {msg['groundedness']}")
                 st.markdown(f"*{msg['explanation']}*")
 
             conversation_id = msg.get("conversation_id")

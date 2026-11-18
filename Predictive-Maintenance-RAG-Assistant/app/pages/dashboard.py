@@ -10,7 +10,7 @@ import streamlit as st
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT_DIR))
 
-from src.database import get_conversations, get_statistic
+from src.database import get_conversations, get_statistic, get_groundedness_stats
 
 # --- Palette --------------------------------------------------------------
 PRIMARY = "#2a78d6"
@@ -30,6 +30,7 @@ if st.button("🔄 Refresh"):
 try:
     stats = get_statistic()
     records = get_conversations(limit=200)
+    groundedness = get_groundedness_stats()
 except Exception as e:
     st.error(f"Couldn't reach the database: {e}")
     st.stop()
@@ -50,7 +51,61 @@ k2.metric("Avg response time", f"{stats.avg_response_time:.2f}s")
 k3.metric("Total cost", f"${stats.total_cost:.4f}")
 k4.metric("Avg tokens", f"{stats.avg_tokens:.0f}")
 
+# ---------------------------------------------------------------------------
+# Answer quality (LLM-judge groundedness)
+# ---------------------------------------------------------------------------
+st.subheader("Answer quality: groundedness")
+st.caption(
+    "Share of answers whose claims are all supported by the retrieved "
+    "knowledge-base context, as judged by the LLM judge."
+)
+
+GROUNDEDNESS_ORDER = ["GROUNDED", "PARTIALLY_GROUNDED", "NOT_GROUNDED"]
+GROUNDEDNESS_COLORS = [ACCENT, "#e0a500", "#d64545"]  # green / amber / red
+
+total_judged = sum(groundedness.values())
+if total_judged == 0:
+    st.info(
+        "No groundedness verdicts yet. Answers logged before the groundedness "
+        "check was added have no label. Ask a new question to see one."
+    )
+else:
+    g_df = pd.DataFrame({
+        "label": GROUNDEDNESS_ORDER,
+        "count": [groundedness.get(label, 0) for label in GROUNDEDNESS_ORDER],
+    })
+    g_df["share"] = g_df["count"] / total_judged
+
+    q1, q2 = st.columns([1, 2])
+    q1.metric(
+        "Fully grounded answers",
+        f"{g_df.loc[0, 'share']:.0%}",
+        help="All factual claims supported by the retrieved context",
+    )
+    q1.metric("Answers judged", total_judged)
+
+    chart = (
+        alt.Chart(g_df)
+        .mark_bar(cornerRadius=4)
+        .encode(
+            x=alt.X("count:Q", title="Answers"),
+            y=alt.Y("label:N", sort=GROUNDEDNESS_ORDER, title=None),
+            color=alt.Color(
+                "label:N",
+                scale=alt.Scale(domain=GROUNDEDNESS_ORDER, range=GROUNDEDNESS_COLORS),
+                legend=None,
+            ),
+            tooltip=["label:N", "count:Q", alt.Tooltip("share:Q", format=".0%")],
+        )
+        .properties(height=160)
+    )
+    q2.altair_chart(chart, width="stretch")
+
 st.divider()
+
+st.divider()
+
+
 
 # ---------------------------------------------------------------------------
 # Charts

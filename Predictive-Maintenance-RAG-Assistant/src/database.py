@@ -5,6 +5,7 @@ from tqdm.auto import tqdm
 from datetime import datetime
 from src.metrics import LLMCallRecord
 import logging
+import json
 logger = logging.getLogger(__name__)
 
 DB_TIMEZONE = datetime.now().astimezone().tzinfo
@@ -97,7 +98,9 @@ def create_conversation_db(drop=False):
                     ADD COLUMN IF NOT EXISTS completion_tokens INTEGER,
                     ADD COLUMN IF NOT EXISTS total_tokens INTEGER,
                     ADD COLUMN IF NOT EXISTS response_time FLOAT,
-                    ADD COLUMN IF NOT EXISTS cost FLOAT
+                    ADD COLUMN IF NOT EXISTS cost FLOAT,
+                    ADD COLUMN IF NOT EXISTS groundedness TEXT,
+                    ADD COLUMN IF NOT EXISTS unsupported_claims TEXT
             """)
 
     logger.info("Schema ready.")
@@ -144,6 +147,7 @@ def save_feedback(conversation_id, source, relevance=None,
                   explanation=None, score=None, judge= None):
 
     judge = judge or {}
+    claims = judge.get("unsupported_claims")
     timestamp = datetime.now(DB_TIMEZONE)
 
     with get_db_connection() as conn:
@@ -153,15 +157,17 @@ def save_feedback(conversation_id, source, relevance=None,
                 INSERT INTO feedback (
                     conversation_id, source, relevance,explanation, score, 
                     model, prompt_tokens, completion_tokens, total_tokens,
-                    response_time, cost,timestamp
+                    response_time, cost, groundedness, unsupported_claims,timestamp
                 ) VALUES (
-                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
                 )
                 """,
                 (conversation_id, source, relevance, explanation, score,
-                 judge.get("model"), judge.get("prompt_tokens"), judge.get("completion_tokens"),judge.get("total_tokens"),
+                judge.get("model"), judge.get("prompt_tokens"), judge.get("completion_tokens"),judge.get("total_tokens"),
                 judge.get("response_time"), judge.get("cost"),
-                 timestamp),
+                judge.get("groundedness"),
+                json.dumps(claims) if claims is not None else None,
+                timestamp),
             )
    
 
@@ -205,3 +211,15 @@ def get_statistic():
         total_cost=row[2] or 0.0,
         avg_tokens=row[3] or 0.0,
     )
+
+def get_groundedness_stats():
+    """Count of judge verdicts per groundedness label."""
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT groundedness, COUNT(*)
+                FROM feedback
+                WHERE source = 'judge' AND groundedness IS NOT NULL
+                GROUP BY groundedness
+            """)
+            return dict(cur.fetchall())
