@@ -31,24 +31,24 @@ recommended action) synthesized from the relevant knowledge-base entries.
 User question
       │
       ▼
-Retrieval  (src/search.py)       TF-IDF vectorization + cosine similarity
-      │                          over question/answer/section/failure_mode/
-      │                          process_control text, fitted once at startup
-                                 and cached; top-5 matches
+Retrieval  (src/search.py)                    TF-IDF vectorization + cosine similarity
+      │                                       over question/answer/section/failure_mode/
+      │                                       process_control text, fitted once at startup
+                                              and cached; top-5 matches
       ▼
-Prompt assembly  (src/rag_helper.py)   Retrieved entries formatted into context,
-      │                                 injected into a fixed prompt template
+Prompt assembly  (src/rag_helper.py)          Retrieved entries formatted into context,
+      │                                       injected into a fixed prompt template
       ▼
 Generation  (OpenAI Responses API, gpt-5.4-mini)
       │
       ▼
-Answer + usage metrics (src/metrics.py)   cost, tokens, response time
+Answer + usage metrics (src/metrics.py)       cost, tokens, response time
       │
       ▼
-LLM-as-judge relevance check (src/judge.py) verdict + its own tokens/cost
+LLM-as-judge relevance check (src/judge.py)   relevance + groundedness against the retrieved context, in one call; logs its own tokens/cost
       │
       ▼
-Streamlit chat UI  (app/app.py)
+Streamlit chat UI  (app/app.py)               warns the user when an answer contains unsupported claims  →  Postgres log
 ```
 
 An LLM-as-judge (`src/judge.py`) scores every generated answer's relevance,
@@ -71,12 +71,14 @@ data/
   rag_answer2.csv          generated answers, prompt/model Approach B
   rag_evaluate1.csv        LLM-judge scores for Approach A
   rag_evaluate2.csv        LLM-judge scores for Approach B
+  groundedness_eval.csv    judge verdicts, context and unsupported claims for all 355
 
 notebook/
   ground_truth_generation.ipynb   builds ground_truth.csv from the knowledge base
   retrieval_evaluation.ipynb      compares lexical vs. vector-based retrieval
   rag_answer_generation.ipynb     generates answers for two prompt/model approaches
   rag_evaluation.ipynb            LLM-as-judge scoring + approach comparison
+  groundedness_evaluation.ipynb   groundedness rate, injection tests, manual-review agreement
 
 src/
   ingest.py         loads the knowledge base, build_index() is the lexical
@@ -141,6 +143,31 @@ answer) in `notebook/rag_evaluation.ipynb`:
 Approach A scored higher and is the configuration used in production
 (`src/assistant.py`, `src/rag_helper.py`).
 
+### Groundedness evaluation
+
+The relevance judge was extended to also check **groundedness**: whether every
+factual claim in an answer is supported by the retrieved context
+(`src/judge.py`). Both checks run in a single LLM call.
+`notebook/groundedness_evaluation.ipynb` evaluates the production configuration
+(Approach A) and validates the judge itself.
+
+**Rubric.** Specific facts (numbers, thresholds, causes, intervals) must appear
+in the retrieved context. Generic safety or procedural advice and faithful
+rewording are not counted as unsupported. A correct "the context does not
+contain enough information" counts as grounded.
+
+| Check | Result |
+|---|---|
+| Fully grounded answers (355 Approach-A answers) | **93.2%** (6.8% partially grounded, 0% not grounded) |
+| Out-of-scope fabricated claims injected into answers | **30/30 caught**, with the injected claim explicitly named in all 30 |
+| Numbers in originally grounded answers altered by ~50% | **29/30 caught** |
+| Agreement with manual review (random sample of 20, same rubric) | **15/20** |
+| Judge cost for all 355 answers | **$0.49** (≈ $0.0014 per answer) |
+
+The two injection tests show the judge reliably detects claims from outside the
+knowledge base and clearly wrong numbers. Agreement with manual review is
+moderate, so groundedness verdicts are treated as a screening signal for human
+review, not as ground truth.
 
 #### Limitations
 
@@ -154,6 +181,14 @@ Approach A scored higher and is the configuration used in production
   boosted keyword search here, but paraphrased questions with no shared terms
   may retrieve poorly. Comparing against embedding-based and hybrid retrieval
   is a planned next step.
+- **Judge validation is small-sample.** Manual agreement was measured on 20
+  answers; the altered-number test used a ~50% change, so smaller numeric
+  drifts (e.g. 200 → 210) were not tested.
+- **Same model family.** The judge (gpt-5.4-mini) also generated the answers it
+  evaluates, which may bias it towards accepting its own phrasing.
+- **Single-user state.** `last_context` / `last_call` are stored on a shared
+  assistant instance: fine for a demo, but concurrent users would need
+  per-request state.
   
 ## Setup
 
@@ -251,12 +286,19 @@ reflects real usage as soon as the app is used, with no extra setup beyond
 the Postgres steps above.
 The judge's own token usage and cost are logged alongside its verdict, so the dashboard reports the true cost per question (answer + evaluation), not just the answer call.
 
+The dashboard also shows answer quality: the share of fully grounded answers
+and the distribution of groundedness verdicts. In the chat, any answer the
+judge marks as partially or not grounded is shown with a warning listing the
+specific claims to verify before acting on them.
+
 ## Version history
 
 - **v1.0-zoomcamp-submission**: capstone as submitted for peer review.
 - **v1.1-hardened**: production hardening: cached retriever, centralised
   prompts and pricing, judge cost tracking, structured logging, fail-fast
   database initialisation, unit tests and CI, slimmer Docker image.
+- **v1.2-groundedness**: context-groundedness judge with in-app warnings,
+  dashboard quality metrics and a validated offline evaluation.
   
 ## License
 
